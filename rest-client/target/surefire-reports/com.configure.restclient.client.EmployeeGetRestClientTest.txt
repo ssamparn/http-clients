@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.configure.restclient.client.EmployeeGetRestClientTest
--------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.874 s - in com.configure.restclient.client.EmployeeGetRestClientTest
