@@ -1,4 +1,4 @@
-package com.configure.restservice.web.controller;
+package com.configure.restservice.web.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -3,7 +3,7 @@ package com.configure.restservice.service;
 
 import com.configure.restservice.entity.EmployeeEntity;
 import com.configure.restservice.repository.EmployeeRepository;
-import com.configure.restservice.web.controller.EmployeeNotFoundException;
+import com.configure.restservice.web.exception.EmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
