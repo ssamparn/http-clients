@@ -5,6 +5,9 @@ import com.configure.restservice.entity.EmployeeEntity;
 import com.configure.restservice.repository.EmployeeRepository;
 import com.configure.restservice.web.exception.EmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +27,7 @@ public class EmployeeService {
         this.repository = repository;
     }
 
+    @Cacheable(value = "Get-Employee", key = "#employeeId")
     public EmployeeEntity getEmployee(Long employeeId) {
         Optional<EmployeeEntity> employee = repository.findById(employeeId);
         employee.orElseThrow(EmployeeNotFoundException::new);
@@ -46,6 +50,7 @@ public class EmployeeService {
         return repository.save(newEmployee);
     }
 
+    @CachePut(value = "Update-Employee", key = "#employeeId")
     public EmployeeEntity updateEmployee(Long employeeId, EmployeeEntity employeeTobeUpdated) {
         EmployeeEntity employeeEntity = repository.findById(employeeId).orElseThrow(EmployeeNotFoundException::new);
         employeeEntity.setFirstName(employeeTobeUpdated.getFirstName());
@@ -57,6 +62,7 @@ public class EmployeeService {
         return savedEntity;
     }
 
+    @CacheEvict(value = "Delete-Employee")
     public void deleteEmployee(Long employeeId) {
         repository.deleteById(employeeId);
     }
