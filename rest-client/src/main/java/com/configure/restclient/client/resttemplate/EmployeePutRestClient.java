@@ -1,7 +1,7 @@
 package com.configure.restclient.client.resttemplate;
 
 import com.configure.restclient.client.RestClient;
-import com.configure.restclient.entity.EmployeeEntity;
+import com.configure.restclient.model.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class EmployeePutRestClient extends RestClient<EmployeeEntity, EmployeeEntity> {
+public class EmployeePutRestClient extends RestClient<Employee, Employee> {
 
     private static final String CUSTOM_HEADER = "Custom-Header";
     private static final String SERVICE = "EmployeeService";
@@ -30,7 +30,7 @@ public class EmployeePutRestClient extends RestClient<EmployeeEntity, EmployeeEn
         this.restTemplate = restTemplate;
     }
 
-    public EmployeeEntity updateEmployee(EmployeeEntity employeeToBeUpdated, Long employeeId) {
+    public Employee updateEmployee(Employee employeeToBeUpdated, Long employeeId) {
         Map<String, Long> pathVariables = new HashMap<>();
         pathVariables.put("id", employeeId);
 
@@ -39,7 +39,7 @@ public class EmployeePutRestClient extends RestClient<EmployeeEntity, EmployeeEn
         headers.add("Accept-Language", "en-US");
         headers.add("Custom-Header", CUSTOM_HEADER);
 
-        return doPut(employeeToBeUpdated, pathVariables, headers, EmployeeEntity.class);
+        return doPut(employeeToBeUpdated, pathVariables, headers, Employee.class);
     }
 
     @Override

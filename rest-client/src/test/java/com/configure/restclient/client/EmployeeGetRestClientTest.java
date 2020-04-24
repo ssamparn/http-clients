@@ -4,13 +4,12 @@ import com.configure.restclient.client.resttemplate.EmployeeDeleteRestClient;
 import com.configure.restclient.client.resttemplate.EmployeeGetRestClient;
 import com.configure.restclient.client.resttemplate.EmployeePostRestClient;
 import com.configure.restclient.client.resttemplate.EmployeePutRestClient;
-import com.configure.restclient.entity.EmployeeEntity;
+import com.configure.restclient.model.Employee;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DirtiesContext
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EmployeeGetRestClientTest {
 
     @Autowired
@@ -39,7 +38,7 @@ public class EmployeeGetRestClientTest {
 
     @Test
     void getForEntityTest() {
-        EmployeeEntity employee = employeeGetRestClient.getEmployeeById(123L);
+        Employee employee = employeeGetRestClient.getEmployeeById(123L);
         assertNotNull(employee);
         assertNotNull(employee);
         assertEquals("Sashank", employee.getFirstName());
@@ -47,27 +46,26 @@ public class EmployeeGetRestClientTest {
 
     @Test
     void getForEntityNotFoundTest() {
-        EmployeeEntity nonExistingEmployee = employeeGetRestClient.getEmployeeById(-123L);
+        Employee nonExistingEmployee = employeeGetRestClient.getEmployeeById(-123L);
 
         assertNotNull(nonExistingEmployee);
         assertNull(nonExistingEmployee.getId());
     }
 
     @Test
-    @Sql({"/data.sql"})
     void getAllTest() {
-        List<EmployeeEntity> employees = employeeGetRestClient.getAllEemployees(0, 3);
+        List<Employee> employees = employeeGetRestClient.getAllEemployees(0, 3);
 
         assertNotNull(employees);
         assertEquals(3, employees.size());
-        assertEquals("Rohan", employees.get(0).getFirstName());
+        assertEquals("Monalisa", employees.get(0).getFirstName());
         assertEquals("Sashank", employees.get(1).getFirstName());
         assertEquals("Sashank", employees.get(2).getFirstName());
     }
 
     @Test
     void getForObjectTest() {
-        EmployeeEntity employeeObject = employeeGetRestClient.getEmployeeById(524L);
+        Employee employeeObject = employeeGetRestClient.getEmployeeById(524L);
 
         assertNotNull(employeeObject);
         assertEquals("Rohan", employeeObject.getFirstName());
@@ -75,14 +73,14 @@ public class EmployeeGetRestClientTest {
 
     @Test
     void postForEntityTest() {
-        EmployeeEntity employeeToBeCreated = EmployeeEntity.builder()
+        Employee employeeToBeCreated = Employee.builder()
                 .id(56789L)
                 .firstName("Monalisa")
                 .lastName("Samantaray")
                 .yearlyIncome(5505000L)
                 .build();
 
-        EmployeeEntity entity = employeePostRestClient.createNewEmployee(employeeToBeCreated);
+        Employee entity = employeePostRestClient.createNewEmployee(employeeToBeCreated);
 
         assertNotNull(entity);
         assertTrue(entity.getId() != 0);
@@ -93,13 +91,13 @@ public class EmployeeGetRestClientTest {
 
     @Test
     public void postForObjectTest() {
-        EmployeeEntity employeeToCreate = EmployeeEntity.builder()
+        Employee employeeToCreate = Employee.builder()
                 .firstName("Daniel")
                 .lastName("Thomson")
                 .yearlyIncome(65000L)
                 .build();
 
-        EmployeeEntity createdEmployee = employeePostRestClient.createNewEmployee(employeeToCreate);
+        Employee createdEmployee = employeePostRestClient.createNewEmployee(employeeToCreate);
 
         assertNotNull(createdEmployee);
         assertTrue(createdEmployee.getId() != 0);
@@ -110,14 +108,14 @@ public class EmployeeGetRestClientTest {
 
     @Test
     public void putTest() {
-        EmployeeEntity employeeEntity = employeeGetRestClient.getEmployeeById(4L);
+        Employee employeeEntity = employeeGetRestClient.getEmployeeById(4L);
         employeeEntity.setFirstName("Robb");
         employeeEntity.setLastName("Stark");
         employeeEntity.setYearlyIncome(99999L);
 
         employeePutRestClient.updateEmployee(employeeEntity, 4L);
 
-        EmployeeEntity updatedEmployee = employeeGetRestClient.getEmployeeById(4L);
+        Employee updatedEmployee = employeeGetRestClient.getEmployeeById(4L);
 
         assertNotNull(updatedEmployee);
         assertEquals(4, updatedEmployee.getId());

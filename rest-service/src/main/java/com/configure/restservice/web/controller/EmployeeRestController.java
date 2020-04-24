@@ -1,7 +1,9 @@
-package com.configure.restclient.web;
+package com.configure.restservice.web.controller;
 
-import com.configure.restclient.entity.EmployeeEntity;
-import com.configure.restclient.service.EmployeeService;
+import com.configure.restservice.entity.EmployeeEntity;
+import com.configure.restservice.model.Employee;
+import com.configure.restservice.service.EmployeeService;
+import com.configure.restservice.service.EmployeeServiceResponseFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,35 +25,43 @@ import java.util.List;
 public class EmployeeRestController {
 
     private final EmployeeService employeeService;
+    private final EmployeeServiceResponseFactory responseFactory;
 
     @Autowired
-    public EmployeeRestController(EmployeeService employeeService) {
+    public EmployeeRestController(EmployeeService employeeService, EmployeeServiceResponseFactory responseFactory) {
         this.employeeService = employeeService;
+        this.responseFactory = responseFactory;
     }
 
     @GetMapping(path = "/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EmployeeEntity> getEmployee(@PathVariable(name = "employeeId") Long employeeId) {
+    public ResponseEntity<Employee> getEmployee(@PathVariable(name = "employeeId") Long employeeId) {
         EmployeeEntity employeeEntity = employeeService.getEmployee(employeeId);
-        return new ResponseEntity<>(employeeEntity, HttpStatus.OK);
+
+        Employee employee = responseFactory.createGetEmployeeResponse(employeeEntity);
+
+        return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
     @GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<EmployeeEntity>> getAllEmployees(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+    public ResponseEntity<List<Employee>> getAllEmployees(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
                                                                 @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
         List<EmployeeEntity> allEmployees = employeeService.getAllEmployees(pageNumber, pageSize);
-        return new ResponseEntity<>(allEmployees, HttpStatus.OK);
+        List<Employee> allEmployeesResponse = responseFactory.createGetAllEmployeesResponse(allEmployees);
+        return new ResponseEntity<>(allEmployeesResponse, HttpStatus.OK);
     }
 
     @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EmployeeEntity> createEmployee(@RequestBody EmployeeEntity newEmployee) {
+    public ResponseEntity<Employee> createEmployee(@RequestBody EmployeeEntity newEmployee) {
         EmployeeEntity savedEmployee = employeeService.createNewEemployee(newEmployee);
-        return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
+        Employee newEmployeeResponse = responseFactory.createNewEmployeeResponse(savedEmployee);
+        return new ResponseEntity<>(newEmployeeResponse, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{employeeId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EmployeeEntity> updateEmplyee(@PathVariable(name = "employeeId") Long employeeId, @RequestBody EmployeeEntity employeeTobeUpdated) {
+    public ResponseEntity<Employee> updateEmplyee(@PathVariable(name = "employeeId") Long employeeId, @RequestBody EmployeeEntity employeeTobeUpdated) {
         EmployeeEntity updatedEmployee = employeeService.updateEmployee(employeeId, employeeTobeUpdated);
-        return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+        Employee updateEmployeeResponse = responseFactory.createUpdateEmployeeResponse(updatedEmployee);
+        return new ResponseEntity<>(updateEmployeeResponse, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{employeeId}")

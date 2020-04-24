@@ -1,6 +1,6 @@
-package com.configure.restclient.repository;
+package com.configure.restservice.repository;
 
-import com.configure.restclient.entity.EmployeeEntity;
+import com.configure.restservice.entity.EmployeeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

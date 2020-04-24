@@ -1,7 +1,7 @@
 package com.configure.restclient.client.resttemplate;
 
 import com.configure.restclient.client.RestClient;
-import com.configure.restclient.entity.EmployeeEntity;
+import com.configure.restclient.model.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class EmployeeGetRestClient extends RestClient<String, EmployeeEntity> {
+public class EmployeeGetRestClient extends RestClient<String, Employee> {
 
     private static final String CUSTOM_HEADER = "Custom-Header";
     private static final String SERVICE = "EmployeeService";
@@ -37,7 +37,7 @@ public class EmployeeGetRestClient extends RestClient<String, EmployeeEntity> {
         this.restTemplate = restTemplate;
     }
 
-    public EmployeeEntity getEmployeeById(Long employeeId) {
+    public Employee getEmployeeById(Long employeeId) {
         Map<String, Long> pathVariables = new HashMap<>();
         pathVariables.put("id", employeeId);
 
@@ -46,18 +46,18 @@ public class EmployeeGetRestClient extends RestClient<String, EmployeeEntity> {
         headers.add("Accept-Language", "en-US");
         headers.add("Custom-Header", CUSTOM_HEADER);
 
-        EmployeeEntity employee = doGet(pathVariables, null, headers, EmployeeEntity.class);
+        Employee employee = doGet(pathVariables, null, headers, Employee.class);
         return employee;
     }
 
-    public List<EmployeeEntity> getAllEemployees(int page, int pageSize) {
+    public List<Employee> getAllEemployees(int page, int pageSize) {
         String requestUri = url + "?page={page}&pageSize={pageSize}";
 
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("page", Integer.toString(page));
         queryParams.put("pageSize", Long.toString(pageSize));
 
-        ResponseEntity<EmployeeEntity[]> allEmployees = restTemplate.getForEntity(requestUri, EmployeeEntity[].class, queryParams);
+        ResponseEntity<Employee[]> allEmployees = restTemplate.getForEntity(requestUri, Employee[].class, queryParams);
         return allEmployees.getBody() != null ? Arrays.asList(allEmployees.getBody()) : Collections.emptyList();
     }
 

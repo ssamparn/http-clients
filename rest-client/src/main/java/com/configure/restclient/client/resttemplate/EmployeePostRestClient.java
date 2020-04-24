@@ -1,7 +1,7 @@
 package com.configure.restclient.client.resttemplate;
 
 import com.configure.restclient.client.RestClient;
-import com.configure.restclient.entity.EmployeeEntity;
+import com.configure.restclient.model.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Component
-public class EmployeePostRestClient extends RestClient<EmployeeEntity, EmployeeEntity> {
+public class EmployeePostRestClient extends RestClient<Employee, Employee> {
 
     private static final String CUSTOM_HEADER = "Custom-Header";
     private static final String SERVICE = "EmployeeService";
@@ -27,13 +27,13 @@ public class EmployeePostRestClient extends RestClient<EmployeeEntity, EmployeeE
         this.restTemplate = restTemplate;
     }
 
-    public EmployeeEntity createNewEmployee(EmployeeEntity newEmployee) {
+    public Employee createNewEmployee(Employee newEmployee) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("User-Agent", "EmployeeRestClient");
         headers.add("Accept-Language", "en-US");
         headers.add("Custom-Header", CUSTOM_HEADER);
 
-        return doPost(newEmployee, headers, EmployeeEntity.class);
+        return doPost(newEmployee, headers, Employee.class);
     }
 
     @Override

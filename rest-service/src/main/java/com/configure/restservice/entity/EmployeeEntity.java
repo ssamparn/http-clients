@@ -1,4 +1,4 @@
-package com.configure.restclient.entity;
+package com.configure.restservice.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
