@@ -12,7 +12,7 @@
 	<artifactId>rest-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>rest-service</name>
-	<description>Spring REST Service to be used in Client configuration projects</description>
+	<description>Spring REST Service to be used in client configuration projects</description>
 
 	<properties>
 		<java.version>11</java.version>
