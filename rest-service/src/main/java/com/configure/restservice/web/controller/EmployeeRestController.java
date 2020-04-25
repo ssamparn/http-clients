@@ -5,6 +5,7 @@ import com.configure.restservice.model.Employee;
 import com.configure.restservice.service.EmployeeService;
 import com.configure.restservice.service.EmployeeServiceResponseFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -26,11 +28,13 @@ public class EmployeeRestController {
 
     private final EmployeeService employeeService;
     private final EmployeeServiceResponseFactory responseFactory;
+    private final CacheManager cacheManager;
 
     @Autowired
-    public EmployeeRestController(EmployeeService employeeService, EmployeeServiceResponseFactory responseFactory) {
+    public EmployeeRestController(EmployeeService employeeService, EmployeeServiceResponseFactory responseFactory, CacheManager cacheManager) {
         this.employeeService = employeeService;
         this.responseFactory = responseFactory;
+        this.cacheManager = cacheManager;
     }
 
     @GetMapping(path = "/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -70,4 +74,9 @@ public class EmployeeRestController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(path = "/getCacheNames")
+    public ResponseEntity<Collection<String>> getFromCache() {
+        Collection<String> cacheNames = cacheManager.getCacheNames();
+        return new ResponseEntity<>(cacheNames, HttpStatus.OK);
+    }
 }
