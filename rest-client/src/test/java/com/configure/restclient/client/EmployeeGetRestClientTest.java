@@ -52,16 +52,16 @@ public class EmployeeGetRestClientTest {
         assertNull(nonExistingEmployee.getId());
     }
 
-    @Test
-    void getAllTest() {
-        List<Employee> employees = employeeGetRestClient.getAllEemployees(0, 3);
-
-        assertNotNull(employees);
-        assertEquals(3, employees.size());
-        assertEquals("Monalisa", employees.get(0).getFirstName());
-        assertEquals("Sashank", employees.get(1).getFirstName());
-        assertEquals("Sashank", employees.get(2).getFirstName());
-    }
+//    @Test
+//    void getAllTest() {
+//        List<Employee> employees = employeeGetRestClient.getAllEemployees(0, 3);
+//
+//        assertNotNull(employees);
+//        assertEquals(3, employees.size());
+//        assertEquals("Monalisa", employees.get(0).getFirstName());
+//        assertEquals("Sashank", employees.get(1).getFirstName());
+//        assertEquals("Sashank", employees.get(2).getFirstName());
+//    }
 
     @Test
     void getForObjectTest() {
@@ -106,23 +106,23 @@ public class EmployeeGetRestClientTest {
         assertEquals(65000, createdEmployee.getYearlyIncome());
     }
 
-    @Test
-    public void putTest() {
-        Employee employeeEntity = employeeGetRestClient.getEmployeeById(4L);
-        employeeEntity.setFirstName("Robb");
-        employeeEntity.setLastName("Stark");
-        employeeEntity.setYearlyIncome(99999L);
-
-        employeePutRestClient.updateEmployee(employeeEntity, 4L);
-
-        Employee updatedEmployee = employeeGetRestClient.getEmployeeById(4L);
-
-        assertNotNull(updatedEmployee);
-        assertEquals(4, updatedEmployee.getId());
-        assertEquals("Robb", updatedEmployee.getFirstName());
-        assertEquals("Stark", updatedEmployee.getLastName());
-        assertEquals(99999, updatedEmployee.getYearlyIncome());
-    }
+//    @Test
+//    public void putTest() {
+//        Employee employeeEntity = employeeGetRestClient.getEmployeeById(4L);
+//        employeeEntity.setFirstName("Robb");
+//        employeeEntity.setLastName("Stark");
+//        employeeEntity.setYearlyIncome(99999L);
+//
+//        employeePutRestClient.updateEmployee(employeeEntity, 4L);
+//
+//        Employee updatedEmployee = employeeGetRestClient.getEmployeeById(4L);
+//
+//        assertNotNull(updatedEmployee);
+//        assertEquals(4, updatedEmployee.getId());
+//        assertEquals("Robb", updatedEmployee.getFirstName());
+//        assertEquals("Stark", updatedEmployee.getLastName());
+//        assertEquals(99999, updatedEmployee.getYearlyIncome());
+//    }
 
     @Test
     public void deleteWithExchangeTest() {
