@@ -7,6 +7,10 @@ applications:
   instances: 1
   timeout: 180
   routes:
-  - route: rest-service.apps.we.com
+    - route: rest-service.apps.pcf.nl
   env:
-    JBP_CONFIG_OPEN_JDK_JRE: '{jre: { version: 11.+ }}'
+    JBP_CONFIG_OPEN_JDK_JRE: '{jre: { version: 11.+ } }'
+    SPRING_PROFILES_ACTIVE: default
+  sevices:
+    - config-server
+    - redis-cache
