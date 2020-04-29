@@ -4,6 +4,7 @@ target/
 !**/src/main/**
 !**/src/test/**
 rest-service/manifest.yml
+rest-client/manifest.yml
 
 ### STS ###
 .apt_generated
