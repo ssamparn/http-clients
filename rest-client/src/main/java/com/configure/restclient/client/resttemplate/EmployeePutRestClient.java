@@ -20,7 +20,7 @@ public class EmployeePutRestClient extends RestClient<Employee, Employee> {
     private static final String SERVICE = "EmployeeService";
     private static final String OPERATION = "UpdateEmployee";
 
-    @Value("${employeeService.https.url}")
+    @Value("${employeeService.http.url}")
     private String serviceUrl;
 
     private final RestTemplate restTemplate;

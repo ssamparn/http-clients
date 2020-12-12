@@ -25,7 +25,7 @@ public class EmployeeGetRestClient extends RestClient<String, Employee> {
     private static final String SERVICE = "EmployeeService";
     private static final String OPERATION = "GetEmployee";
 
-    @Value("${employeeService.https.url}")
+    @Value("${employeeService.http.url}")
     private String serviceUrl;
 
     private final RestTemplate restTemplate;

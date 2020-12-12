@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @ToString
 public class EmployeeServiceConnectionProperties implements ConnectionProperties {
 
-    @Value("${employeeService.https.url}")
+    @Value("${employeeService.http.url}")
     private String url;
 
     @Value("${employeeService.connection.timeout.milliseconds}")
