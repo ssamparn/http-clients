@@ -19,7 +19,7 @@ public class EmployeeDeleteRestClient extends RestClient<Void, Void> {
     private static final String SERVICE = "EmployeeService";
     private static final String OPERATION = "DeleteEmployee";
 
-    @Value("${employeeService.url}")
+    @Value("${employeeService.https.url}")
     private String serviceUrl;
 
     private final RestTemplate restTemplate;

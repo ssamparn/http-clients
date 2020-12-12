@@ -1,6 +1,5 @@
-package com.configure.restclient.config;
+package com.configure.restclient.client.config;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HeaderElement;
 import org.apache.http.HeaderElementIterator;
 import org.apache.http.HeaderIterator;
@@ -21,13 +20,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
 @Configuration
 @EnableScheduling
-public class ApacheHttpClientConfig {
+public class EmployeeServiceConfig {
 
-    @Bean(name = "employeeClientConnectionManager")
-    public PoolingHttpClientConnectionManager poolingHttpClientConnectionManager(ConnectionProperties connectionProperties) {
+    @Bean(name = "employeeServiceConnectionManager")
+    public PoolingHttpClientConnectionManager poolingHttpClientConnectionManager(EmployeeServiceConnectionProperties connectionProperties) {
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
         connectionManager.setMaxTotal(connectionProperties.getMaxHttpPoolsize());
         connectionManager.setDefaultMaxPerRoute(connectionProperties.getMaxHttpRouteConnection());
@@ -35,8 +33,25 @@ public class ApacheHttpClientConfig {
         return connectionManager;
     }
 
+    @Bean(name = "employeeServiceHttpClient")
+    public CloseableHttpClient httpClient(@Qualifier("employeeServiceConnectionManager") PoolingHttpClientConnectionManager connectionManager, EmployeeServiceConnectionProperties employeeServiceConnectionProperties) {
+
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(employeeServiceConnectionProperties.getConnectionTimeout())
+                .setConnectionRequestTimeout(employeeServiceConnectionProperties.getRequestTimeout())
+                .setSocketTimeout(employeeServiceConnectionProperties.getSocketTimeout())
+                .build();
+
+        return HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .setConnectionManager(connectionManager)
+                .setKeepAliveStrategy(connectionKeepAliveStrategy(employeeServiceConnectionProperties))
+                .disableConnectionState()
+                .build();
+    }
+
     @Bean
-    public ConnectionKeepAliveStrategy connectionKeepAliveStrategy(ConnectionProperties connectionProperties) {
+    public ConnectionKeepAliveStrategy connectionKeepAliveStrategy(EmployeeServiceConnectionProperties employeeServiceConnectionProperties) {
         return ((httpResponse, httpContext) -> {
             HeaderIterator headerIterator = httpResponse.headerIterator(HTTP.CONN_KEEP_ALIVE);
             HeaderElementIterator elementIterator = new BasicHeaderElementIterator(headerIterator);
@@ -50,12 +65,12 @@ public class ApacheHttpClientConfig {
                     return Long.parseLong(value) * 1000;
                 }
             }
-            return connectionProperties.getDefaultKeepAliveTime();
+            return employeeServiceConnectionProperties.getDefaultKeepAliveTime();
         });
     }
 
     @Bean
-    public Runnable idleConnectionMonitor(@Qualifier("employeeClientConnectionManager") PoolingHttpClientConnectionManager httpClientPool, ConnectionProperties connectionProperties) {
+    public Runnable idleConnectionMonitor(@Qualifier("employeeServiceConnectionManager") PoolingHttpClientConnectionManager httpClientPool, EmployeeServiceConnectionProperties connectionProperties) {
         return new Runnable() {
             @Override
             @Scheduled(fixedDelay = 20000)
@@ -77,19 +92,4 @@ public class ApacheHttpClientConfig {
         return scheduler;
     }
 
-    @Bean
-    public CloseableHttpClient httpClient(ConnectionProperties connectionProperties) {
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(connectionProperties.getConnectionTimeout())
-                .setConnectionRequestTimeout(connectionProperties.getRequestTimeout())
-                .setSocketTimeout(connectionProperties.getSocketTimeout())
-                .build();
-
-        return HttpClients.custom()
-                .setDefaultRequestConfig(requestConfig)
-                .setConnectionManager(poolingHttpClientConnectionManager(connectionProperties))
-                .setKeepAliveStrategy(connectionKeepAliveStrategy(connectionProperties))
-                .disableConnectionState()
-                .build();
-    }
 }

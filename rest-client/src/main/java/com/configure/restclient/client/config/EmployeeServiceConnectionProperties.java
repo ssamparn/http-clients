@@ -1,5 +1,6 @@
-package com.configure.restclient.config;
+package com.configure.restclient.client.config;
 
+import com.configure.restclient.config.ConnectionProperties;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 @ToString
 public class EmployeeServiceConnectionProperties implements ConnectionProperties {
 
-    @Value("${employeeService.url}")
+    @Value("${employeeService.https.url}")
     private String url;
 
     @Value("${employeeService.connection.timeout.milliseconds}")

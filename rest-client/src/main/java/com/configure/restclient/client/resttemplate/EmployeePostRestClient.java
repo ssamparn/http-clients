@@ -19,7 +19,7 @@ public class EmployeePostRestClient extends RestClient<Employee, Employee> {
 
     private final RestTemplate restTemplate;
 
-    @Value("${employeeService.url}")
+    @Value("${employeeService.https.url}")
     private String serviceUrl;
 
     @Autowired

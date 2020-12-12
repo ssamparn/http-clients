@@ -4,6 +4,7 @@ import com.configure.restclient.client.RestClient;
 import com.configure.restclient.model.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +25,13 @@ public class EmployeeGetRestClient extends RestClient<String, Employee> {
     private static final String SERVICE = "EmployeeService";
     private static final String OPERATION = "GetEmployee";
 
-    private static final String resource_path = "/rest/employees/";
-    private String url = "http://localhost:8080" + resource_path;
-
-    @Value("${employeeService.url}")
+    @Value("${employeeService.https.url}")
     private String serviceUrl;
 
     private final RestTemplate restTemplate;
 
     @Autowired
-    public EmployeeGetRestClient(RestTemplate restTemplate) {
+    public EmployeeGetRestClient(@Qualifier("employeeServiceRestTemplate") RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
@@ -50,8 +48,8 @@ public class EmployeeGetRestClient extends RestClient<String, Employee> {
         return employee;
     }
 
-    public List<Employee> getAllEemployees(int page, int pageSize) {
-        String requestUri = url + "?page={page}&pageSize={pageSize}";
+    public List<Employee> getAllEmployees(int page, int pageSize) {
+        String requestUri = serviceUrl + "?page={page}&pageSize={pageSize}";
 
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("page", Integer.toString(page));
