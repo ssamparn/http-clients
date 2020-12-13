@@ -45,7 +45,7 @@ public class EmployeeService {
         }
     }
 
-    public EmployeeEntity createNewEemployee(EmployeeEntity newEmployee) {
+    public EmployeeEntity createNewEmployee(EmployeeEntity newEmployee) {
         return repository.save(newEmployee);
     }
 

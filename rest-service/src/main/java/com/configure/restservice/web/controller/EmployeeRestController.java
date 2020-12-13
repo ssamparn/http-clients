@@ -38,7 +38,7 @@ public class EmployeeRestController {
     }
 
     @GetMapping(path = "/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Employee> getEmployee(@PathVariable(name = "employeeId") Long employeeId) {
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable(name = "employeeId") Long employeeId) {
         EmployeeEntity employeeEntity = employeeService.getEmployee(employeeId);
 
         Employee employee = responseFactory.createGetEmployeeResponse(employeeEntity);
@@ -56,7 +56,7 @@ public class EmployeeRestController {
 
     @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Employee> createEmployee(@RequestBody EmployeeEntity newEmployee) {
-        EmployeeEntity savedEmployee = employeeService.createNewEemployee(newEmployee);
+        EmployeeEntity savedEmployee = employeeService.createNewEmployee(newEmployee);
         Employee newEmployeeResponse = responseFactory.createNewEmployeeResponse(savedEmployee);
         return new ResponseEntity<>(newEmployeeResponse, HttpStatus.CREATED);
     }
