@@ -1,4 +1,4 @@
-package com.configure.webclient.client.webclients;
+package com.configure.webclient.client;
 
 import com.configure.webclient.model.Employee;
 import lombok.extern.slf4j.Slf4j;
@@ -15,13 +15,13 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 @Slf4j
-@Component
-public class EmployeeGetWebClient {
+@Component("getWebClient")
+public class GetWebClient {
 
     private final WebClient webClient;
 
     @Autowired
-    public EmployeeGetWebClient(WebClient webClient) {
+    public GetWebClient(WebClient webClient) {
         this.webClient = webClient;
     }
 
@@ -71,7 +71,9 @@ public class EmployeeGetWebClient {
                     });
                     return Mono.error(new RuntimeException("5xx"));
                 })
-                .toEntity(new ParameterizedTypeReference<List<Employee>> () {})
-                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .toEntity(new ParameterizedTypeReference<List<Employee>>() {
+                })
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                );
     }
 }

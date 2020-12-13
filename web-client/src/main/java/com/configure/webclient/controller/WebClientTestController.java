@@ -1,10 +1,9 @@
 package com.configure.webclient.controller;
 
-import com.configure.webclient.client.webclients.EmployeeGetWebClient;
-import com.configure.webclient.client.webclients.EmployeePostWebClient;
+import com.configure.webclient.client.GetWebClient;
+import com.configure.webclient.client.PostWebClient;
 import com.configure.webclient.model.Employee;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +19,10 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/webclient")
-public class EmployeeWebClientTestController {
+public class WebClientTestController {
 
-    private final EmployeeGetWebClient getWebClient;
-    private final EmployeePostWebClient postWebClient;
+    private final GetWebClient getWebClient;
+    private final PostWebClient postWebClient;
 
     @GetMapping(path = "/get-employee/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Employee>> getEmployeeById(@PathVariable(name = "employeeId") String employeeId) {

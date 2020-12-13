@@ -1,4 +1,4 @@
-package com.configure.webclient.client.webclients;
+package com.configure.webclient.client;
 
 import com.configure.webclient.model.Employee;
 import lombok.extern.slf4j.Slf4j;
@@ -12,13 +12,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-@Component
-public class EmployeePostWebClient {
+@Component("postWebClient")
+public class PostWebClient {
 
     private final WebClient webClient;
 
     @Autowired
-    public EmployeePostWebClient(WebClient webClient) {
+    public PostWebClient(WebClient webClient) {
         this.webClient = webClient;
     }
 

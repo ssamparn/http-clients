@@ -1,4 +1,4 @@
-package com.configure.webclient.client.webclients;
+package com.configure.webclient.client;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
