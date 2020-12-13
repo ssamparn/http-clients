@@ -1,4 +1,5 @@
 package com.configure.webclient.client;
 
-public class WebClient {
+public class EmployeeWebClient {
+
 }
