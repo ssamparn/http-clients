@@ -25,7 +25,8 @@ public class GetWebClient {
         this.webClient = webClient;
     }
 
-    public Mono<ResponseEntity<Employee>> getEmployeeById(String employeeId) {
+    public Mono<ResponseEntity<Employee>> doGetById(String employeeId) {
+
         return webClient.method(HttpMethod.GET)
                 .uri("/{employeeId}", employeeId)
                 .accept(MediaType.APPLICATION_JSON)
@@ -50,7 +51,7 @@ public class GetWebClient {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    public Mono<ResponseEntity<List<Employee>>> getAllEmployees() {
+    public Mono<ResponseEntity<List<Employee>>> doGetAll() {
         return webClient.method(HttpMethod.GET)
                 .uri("/")
                 .accept(MediaType.APPLICATION_JSON)

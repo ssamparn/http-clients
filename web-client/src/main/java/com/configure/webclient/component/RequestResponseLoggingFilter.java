@@ -16,7 +16,7 @@ public class RequestResponseLoggingFilter {
     public ExchangeFilterFunction logRequest() {
         return (clientRequest, next) -> {
             log.info("Request: {} {}", clientRequest.method(), clientRequest.url());
-            log.info("--- Http Headers of Request: ---");
+            log.info("===========Http Headers of Request=========");
             clientRequest.headers().forEach(this::logHeader);
             return next.exchange(clientRequest);
         };
@@ -26,7 +26,7 @@ public class RequestResponseLoggingFilter {
     public ExchangeFilterFunction logResponse() {
         return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
             log.info("Response: {}", clientResponse.statusCode());
-            log.info("--- Http Headers of Response: ---");
+            log.info("==========Http Headers of Response===========");
             clientResponse.headers().asHttpHeaders()
                     .forEach((name, values) -> values.forEach(value -> log.info("{}={}", name, value)));
             return Mono.just(clientResponse);

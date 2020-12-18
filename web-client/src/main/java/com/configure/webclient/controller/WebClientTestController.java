@@ -1,8 +1,8 @@
 package com.configure.webclient.controller;
 
-import com.configure.webclient.client.GetWebClient;
-import com.configure.webclient.client.PostWebClient;
 import com.configure.webclient.model.Employee;
+import com.configure.webclient.service.GetWebClientService;
+import com.configure.webclient.service.PostWebClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +21,13 @@ import java.util.List;
 @RequestMapping("/webclient")
 public class WebClientTestController {
 
-    private final GetWebClient getWebClient;
-    private final PostWebClient postWebClient;
+    private final GetWebClientService getService;
+    private final PostWebClientService postService;
 
     @GetMapping(path = "/get-employee/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Employee>> getEmployeeById(@PathVariable(name = "employeeId") String employeeId) {
 
-        Mono<ResponseEntity<Employee>> employeeById = getWebClient.getEmployeeById(employeeId);
+        Mono<ResponseEntity<Employee>> employeeById = getService.getEmployeeById(employeeId);
 
         return employeeById;
     }
@@ -35,7 +35,7 @@ public class WebClientTestController {
     @GetMapping(path = "/get-all-employee", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<List<Employee>>> getEmployeeById() {
 
-        Mono<ResponseEntity<List<Employee>>> allEmployees = getWebClient.getAllEmployees();
+        Mono<ResponseEntity<List<Employee>>> allEmployees = getService.getAllEmployees();
 
         return allEmployees;
     }
@@ -43,10 +43,8 @@ public class WebClientTestController {
     @PostMapping(path = "/create-employee", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Employee>> createEmployee(@RequestBody Employee employee) {
 
-        Mono<ResponseEntity<Employee>> newEmployee = postWebClient.createNewEmployee(employee);
+        Mono<ResponseEntity<Employee>> newEmployee = postService.createNewEmployee(employee);
 
         return newEmployee;
     }
-
-
 }
