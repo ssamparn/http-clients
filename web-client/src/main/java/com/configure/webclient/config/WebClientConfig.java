@@ -29,20 +29,19 @@ public class WebClientConfig {
                                @Qualifier("requestFilter") ExchangeFilterFunction requestFilter,
                                @Qualifier("responseFilter") ExchangeFilterFunction responseFilter,
                                ClientConnectionProperties connectionProperties) {
-        WebClient client = WebClient.builder()
+        return WebClient.builder()
                 .baseUrl(connectionProperties.getUrl())
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .filter(requestFilter)
                 .filter(responseFilter)
                 .build();
-        return client;
     }
 
     @Bean
     public HttpClient httpClient(SslContext sslContext,
                                  ClientConnectionProperties connectionProperties) {
-        HttpClient httpClient = HttpClient.create()
+        return HttpClient.create()
                 .wiretap(true)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectionProperties.getConnectionTimeout())
                 .doOnConnected(connection ->
@@ -52,8 +51,6 @@ public class WebClientConfig {
                 .secure(sslSpec ->
                         sslSpec.sslContext(sslContext)
                 );
-
-        return httpClient;
     }
 
 }
