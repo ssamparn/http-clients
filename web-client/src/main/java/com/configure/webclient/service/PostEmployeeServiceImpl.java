@@ -1,6 +1,6 @@
 package com.configure.webclient.service;
 
-import com.configure.webclient.client.PostWebClient;
+import com.configure.webclient.client.PostEmployeeWebClient;
 import com.configure.webclient.model.Employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,12 +9,12 @@ import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class PostWebClientServiceImpl implements PostWebClientService {
+public class PostEmployeeServiceImpl implements PostEmployeeService {
 
-    private final PostWebClient postWebClient;
+    private final PostEmployeeWebClient postEmployeeWebClient;
 
     @Override
     public Mono<ResponseEntity<Employee>> createNewEmployee(Employee employee) {
-        return postWebClient.createNewEmployee(employee);
+        return postEmployeeWebClient.createNewEmployee(employee);
     }
 }

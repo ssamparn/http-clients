@@ -1,8 +1,14 @@
 server:
   port: 8082
 
-employee.get.http:
+get.http:
   url: http://localhost:8080/rest/employees
+  readTimeout: 5000
+  writeTimeout: 5000
+  connectionTimeout: 5000
+
+post.http:
+  url: http://localhost:8080/rest/post-employees
   readTimeout: 5000
   writeTimeout: 5000
   connectionTimeout: 5000

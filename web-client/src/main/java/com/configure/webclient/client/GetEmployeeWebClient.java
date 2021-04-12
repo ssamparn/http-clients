@@ -3,6 +3,7 @@ package com.configure.webclient.client;
 import com.configure.webclient.model.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -16,18 +17,18 @@ import java.util.List;
 
 @Slf4j
 @Component("getWebClient")
-public class GetWebClient {
+public class GetEmployeeWebClient {
 
     private final WebClient webClient;
 
     @Autowired
-    public GetWebClient(WebClient webClient) {
+    public GetEmployeeWebClient(@Qualifier("getEmployeeWebClient") WebClient webClient) {
         this.webClient = webClient;
     }
 
     public Mono<ResponseEntity<Employee>> doGetById(String employeeId) {
 
-        return webClient.method(HttpMethod.GET)
+        return webClient.get()
                 .uri("/{employeeId}", employeeId)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()

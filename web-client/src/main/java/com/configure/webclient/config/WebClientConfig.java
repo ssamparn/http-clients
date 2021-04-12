@@ -25,10 +25,10 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class WebClientConfig {
 
     @Bean
-    public WebClient webClient(HttpClient httpClient,
+    public WebClient getEmployeeWebClient(@Qualifier("getEmployeeHttpClient") HttpClient httpClient,
                                @Qualifier("requestFilter") ExchangeFilterFunction requestFilter,
                                @Qualifier("responseFilter") ExchangeFilterFunction responseFilter,
-                               ClientConnectionProperties connectionProperties) {
+                               @Qualifier("getEmployeeConnectionProperties") ClientConnectionProperties connectionProperties) {
         return WebClient.builder()
                 .baseUrl(connectionProperties.getUrl())
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -39,8 +39,37 @@ public class WebClientConfig {
     }
 
     @Bean
-    public HttpClient httpClient(SslContext sslContext,
-                                 ClientConnectionProperties connectionProperties) {
+    public WebClient postEmployeeWebClient(@Qualifier("postEmployeeHttpClient")HttpClient httpClient,
+                               @Qualifier("requestFilter") ExchangeFilterFunction requestFilter,
+                               @Qualifier("responseFilter") ExchangeFilterFunction responseFilter,
+                               @Qualifier("postEmployeeConnectionProperties") ClientConnectionProperties connectionProperties) {
+        return WebClient.builder()
+                .baseUrl(connectionProperties.getUrl())
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
+                .filter(requestFilter)
+                .filter(responseFilter)
+                .build();
+    }
+
+    @Bean
+    public HttpClient getEmployeeHttpClient(SslContext sslContext,
+                                 @Qualifier("getEmployeeConnectionProperties") ClientConnectionProperties connectionProperties) {
+        return HttpClient.create()
+                .wiretap(true)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectionProperties.getConnectionTimeout())
+                .doOnConnected(connection ->
+                        connection.addHandlerLast(new ReadTimeoutHandler(connectionProperties.getReadTimeout(), MILLISECONDS))
+                                .addHandlerLast(new WriteTimeoutHandler(connectionProperties.getWriteTimeout(), MILLISECONDS)))
+                .responseTimeout(Duration.ofSeconds(2))
+                .secure(sslSpec ->
+                        sslSpec.sslContext(sslContext)
+                );
+    }
+
+    @Bean
+    public HttpClient postEmployeeHttpClient(SslContext sslContext,
+                                 @Qualifier("postEmployeeConnectionProperties") ClientConnectionProperties connectionProperties) {
         return HttpClient.create()
                 .wiretap(true)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectionProperties.getConnectionTimeout())

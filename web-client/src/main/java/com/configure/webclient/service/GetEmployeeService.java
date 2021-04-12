@@ -6,7 +6,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface GetWebClientService {
+public interface GetEmployeeService {
     Mono<ResponseEntity<Employee>> getEmployeeById(String employeeId);
     Mono<ResponseEntity<List<Employee>>> getAllEmployees();
 }

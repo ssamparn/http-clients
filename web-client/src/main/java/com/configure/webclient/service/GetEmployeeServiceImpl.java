@@ -1,6 +1,6 @@
 package com.configure.webclient.service;
 
-import com.configure.webclient.client.GetWebClient;
+import com.configure.webclient.client.GetEmployeeWebClient;
 import com.configure.webclient.model.Employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,17 +11,17 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class GetWebClientServiceImpl implements GetWebClientService {
+public class GetEmployeeServiceImpl implements GetEmployeeService {
 
-    private final GetWebClient getWebClient;
+    private final GetEmployeeWebClient getEmployeeWebClient;
 
     @Override
     public Mono<ResponseEntity<Employee>> getEmployeeById(String employeeId) {
-        return getWebClient.doGetById(employeeId);
+        return getEmployeeWebClient.doGetById(employeeId);
     }
 
     @Override
     public Mono<ResponseEntity<List<Employee>>> getAllEmployees() {
-        return getWebClient.doGetAll();
+        return getEmployeeWebClient.doGetAll();
     }
 }
