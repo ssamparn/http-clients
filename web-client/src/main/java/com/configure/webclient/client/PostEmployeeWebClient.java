@@ -26,7 +26,7 @@ public class PostEmployeeWebClient {
         this.webClient = webClient;
     }
 
-    public Mono<ResponseEntity<Employee>> createNewEmployee(Employee newEmployee) {
+    public Mono<Employee> createNewEmployee(Employee newEmployee) {
         return webClient.method(HttpMethod.POST)
                 .uri("/")
                 .accept(MediaType.APPLICATION_JSON)
@@ -49,7 +49,7 @@ public class PostEmployeeWebClient {
                     });
                     return Mono.error(new RuntimeException("5xx"));
                 })
-                .toEntity(Employee.class);
+                .bodyToMono(Employee.class);
     }
 
     private Consumer<HttpHeaders> createHttpHeaders() {

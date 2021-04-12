@@ -14,7 +14,7 @@ public class PostEmployeeServiceImpl implements PostEmployeeService {
     private final PostEmployeeWebClient postEmployeeWebClient;
 
     @Override
-    public Mono<ResponseEntity<Employee>> createNewEmployee(Employee employee) {
+    public Mono<Employee> createNewEmployee(Employee employee) {
         return postEmployeeWebClient.createNewEmployee(employee);
     }
 }

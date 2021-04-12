@@ -4,16 +4,14 @@ import com.configure.webclient.model.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Slf4j
 @Component("getWebClient")
@@ -26,7 +24,7 @@ public class GetEmployeeWebClient {
         this.webClient = webClient;
     }
 
-    public Mono<ResponseEntity<Employee>> doGetById(String employeeId) {
+    public Mono<Employee> doGetById(String employeeId) {
 
         return webClient.get()
                 .uri("/{employeeId}", employeeId)
@@ -38,7 +36,7 @@ public class GetEmployeeWebClient {
                         log.error("Error message: {}", msg);
                         throw new RuntimeException(msg);
                     });
-                    return Mono.error(new RuntimeException("4xx"));
+                    return Mono.error(new RestClientException("4xx"));
                 })
                 .onStatus(HttpStatus::is5xxServerError, clientResponse -> {
                     Mono<String> errorMsg = clientResponse.bodyToMono(String.class);
@@ -47,12 +45,11 @@ public class GetEmployeeWebClient {
                         throw new RuntimeException(msg);
                     });
                     return Mono.error(new RuntimeException("5xx"));
-                })
-                .toEntity(Employee.class)
-                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                }).bodyToMono(Employee.class);
+
     }
 
-    public Mono<ResponseEntity<List<Employee>>> doGetAll() {
+    public Flux<Employee> doGetAll() {
         return webClient.method(HttpMethod.GET)
                 .uri("/")
                 .accept(MediaType.APPLICATION_JSON)
@@ -73,9 +70,6 @@ public class GetEmployeeWebClient {
                     });
                     return Mono.error(new RuntimeException("5xx"));
                 })
-                .toEntity(new ParameterizedTypeReference<List<Employee>>() {
-                })
-                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                );
+                .bodyToFlux(Employee.class);
     }
 }

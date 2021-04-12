@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,25 +24,25 @@ public class WebClientTestController {
     private final PostEmployeeService postEmployeeService;
 
     @GetMapping(path = "/get-employee/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<Employee>> getEmployeeById(@PathVariable(name = "employeeId") String employeeId) {
+    public Mono<Employee> getEmployeeById(@PathVariable(name = "employeeId") String employeeId) {
 
-        Mono<ResponseEntity<Employee>> employeeById = getEmployeeService.getEmployeeById(employeeId);
+        Mono<Employee> employeeById = getEmployeeService.getEmployeeById(employeeId);
 
         return employeeById;
     }
 
     @GetMapping(path = "/get-all-employee", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<List<Employee>>> getEmployeeById() {
+    public Flux<Employee> getEmployeeById() {
 
-        Mono<ResponseEntity<List<Employee>>> allEmployees = getEmployeeService.getAllEmployees();
+        Flux<Employee> allEmployees = getEmployeeService.getAllEmployees();
 
         return allEmployees;
     }
 
     @PostMapping(path = "/create-employee", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<Employee>> createEmployee(@RequestBody Employee employee) {
+    public Mono<Employee> createEmployee(@RequestBody Employee employee) {
 
-        Mono<ResponseEntity<Employee>> newEmployee = postEmployeeService.createNewEmployee(employee);
+        Mono<Employee> newEmployee = postEmployeeService.createNewEmployee(employee);
 
         return newEmployee;
     }
