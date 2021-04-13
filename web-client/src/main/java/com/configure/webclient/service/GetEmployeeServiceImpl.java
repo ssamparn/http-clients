@@ -51,7 +51,7 @@ public class GetEmployeeServiceImpl implements GetEmployeeService {
     @Override
     public Flux<Employee> getAllEmployees() {
         return getEmployeeWebClient.method(HttpMethod.GET)
-                .uri("/")
+                .uri("/all")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> {

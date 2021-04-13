@@ -46,7 +46,7 @@ public class EmployeeRestController {
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Employee>> getAllEmployees(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
                                                                 @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
         List<EmployeeEntity> allEmployees = employeeService.getAllEmployees(pageNumber, pageSize);
@@ -54,7 +54,7 @@ public class EmployeeRestController {
         return new ResponseEntity<>(allEmployeesResponse, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Employee> createEmployee(@RequestBody EmployeeEntity newEmployee) {
         EmployeeEntity savedEmployee = employeeService.createNewEmployee(newEmployee);
         Employee newEmployeeResponse = responseFactory.createNewEmployeeResponse(savedEmployee);

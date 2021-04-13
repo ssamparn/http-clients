@@ -1,0 +1,43 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/rest/employees/all"
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "getAllEmployees.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/rest/employees/employeeId"
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "getEmployeeById.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/rest/employees/create/"
+      },
+      "response": {
+        "status": 201,
+        "bodyFileName": "createNewEmployee.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    }
+  ]
+}
