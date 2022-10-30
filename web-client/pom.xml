@@ -6,15 +6,15 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.4</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.7.4</version>
+		<relativePath/>
 	</parent>
 
 	<groupId>com.configure</groupId>
 	<artifactId>web-client</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 
-	<name>web-client</name>
+	<name>Web Client</name>
 
 	<description>Spring Web Client Configuration</description>
 
@@ -47,13 +47,13 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
-			<version>3.0.2</version>
+			<version>3.1.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-contract-wiremock</artifactId>
-			<version>3.0.2</version>
+			<version>3.1.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
