@@ -5,19 +5,21 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.4</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.7.4</version>
+		<relativePath/>
 	</parent>
+
 	<groupId>com.configure</groupId>
 	<artifactId>rest-client</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>rest-client</name>
+	<version>1.0.0</version>
+	<name>Rest Client</name>
+
 	<description>Spring Rest Client Configuration</description>
 
 	<properties>
 		<java.version>11</java.version>
-		<spring-cloud.version>2020.0.0-M5</spring-cloud.version>
-		<spring-cloud-services.version>3.2.1.RELEASE</spring-cloud-services.version>
+		<spring-cloud-services.version>3.5.0</spring-cloud-services.version>
+		<spring-cloud.version>2021.0.4</spring-cloud.version>
 	</properties>
 
 	<dependencies>
@@ -93,13 +95,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<repositories>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-		</repository>
-	</repositories>
 
 </project>

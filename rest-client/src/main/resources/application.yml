@@ -1,0 +1,37 @@
+server:
+  port: 8081
+
+spring:
+  cloud:
+    config:
+      enabled: false
+
+management:
+  endpoint:
+    refresh:
+      enabled: true
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+employeeService:
+  http:
+    url: http://localhost:8080/rest/employees/
+    maxpoolsize: 40
+    maxrouteconnection: 40
+    defaultkeepalivetime:
+      milliseconds: 20000
+    idleConnectionWaitTime:
+      milliseconds: 30000
+  connection:
+    timeout:
+      milliseconds: 30000
+  socket:
+    timeout:
+      milliseconds: 60000
+  request:
+    timeout:
+      milliseconds: 30000

@@ -48,14 +48,15 @@ public class EmployeeGetRestClient extends RestClient<String, Employee> {
         return employee;
     }
 
-    public List<Employee> getAllEmployees(int page, int pageSize) {
-        String requestUri = serviceUrl + "?page={page}&pageSize={pageSize}";
+    public List<Employee> getAllEmployees(int pageNumber, int pageSize) {
+        String requestUri = serviceUrl + "?pageNumber={pageNumber}&pageSize={pageSize}";
 
         Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("page", Integer.toString(page));
+        queryParams.put("pageNumber", Integer.toString(pageNumber));
         queryParams.put("pageSize", Long.toString(pageSize));
 
         ResponseEntity<Employee[]> allEmployees = restTemplate.getForEntity(requestUri, Employee[].class, queryParams);
+
         return allEmployees.getBody() != null ? Arrays.asList(allEmployees.getBody()) : Collections.emptyList();
     }
 

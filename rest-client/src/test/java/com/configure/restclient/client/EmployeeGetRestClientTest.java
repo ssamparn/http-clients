@@ -12,6 +12,8 @@
 //import org.springframework.test.annotation.DirtiesContext;
 //import org.springframework.test.context.junit.jupiter.SpringExtension;
 //
+//import java.util.List;
+//
 //import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.junit.jupiter.api.Assertions.assertNotNull;
 //import static org.junit.jupiter.api.Assertions.assertNull;
@@ -50,16 +52,16 @@
 //        assertNull(nonExistingEmployee.getId());
 //    }
 //
-////    @Test
-////    void getAllTest() {
-////        List<Employee> employees = employeeGetRestClient.getAllEmployees(0, 3);
-////
-////        assertNotNull(employees);
-////        assertEquals(3, employees.size());
-////        assertEquals("Monalisa", employees.get(0).getFirstName());
-////        assertEquals("Robb", employees.get(1).getFirstName());
-////        assertEquals("Sashank", employees.get(2).getFirstName());
-////    }
+//    @Test
+//    void getAllTest() {
+//        List<Employee> employees = employeeGetRestClient.getAllEmployees(0, 3);
+//
+//        assertNotNull(employees);
+//        assertEquals(3, employees.size());
+//        assertEquals("Monalisa", employees.get(0).getFirstName());
+//        assertEquals("Robb", employees.get(1).getFirstName());
+//        assertEquals("Sashank", employees.get(2).getFirstName());
+//    }
 //
 //    @Test
 //    void getForObjectTest() {
