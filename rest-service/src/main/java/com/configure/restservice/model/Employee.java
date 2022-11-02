@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "create")
 public class Employee implements Serializable {
 
     private static final long serialVersionUID = -6209873697684245092L;
