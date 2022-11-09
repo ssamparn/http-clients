@@ -1,0 +1,16 @@
+---
+applications:
+  - name: employee-rest-service
+    path: target/employee-rest-service.jar
+    buildpack: java_buildpack
+    health-check-type: http
+    health-check-http-endpoint: /actuator/health
+    instances: 1
+    memory: 1G
+    disk_quota: 512M
+    timeout: 90
+    routes:
+      - route: employee-rest-service.apps.cfd06.rabobank.nl
+    env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{jre: { version: 11.+ } }'
+      JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'
