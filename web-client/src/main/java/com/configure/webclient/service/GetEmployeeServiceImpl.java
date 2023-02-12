@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -30,7 +30,7 @@ public class GetEmployeeServiceImpl implements GetEmployeeService {
                 .uri("/{employeeId}", employeeId)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> {
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
                     Mono<String> errorMsg = clientResponse.bodyToMono(String.class);
                     errorMsg.flatMap(msg -> {
                         log.error("Error message: {}", msg);
@@ -38,7 +38,7 @@ public class GetEmployeeServiceImpl implements GetEmployeeService {
                     });
                     return Mono.error(new RestClientException("4xx"));
                 })
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> {
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> {
                     Mono<String> errorMsg = clientResponse.bodyToMono(String.class);
                     errorMsg.flatMap(msg -> {
                         log.error("Error message: {}", msg);
@@ -54,7 +54,7 @@ public class GetEmployeeServiceImpl implements GetEmployeeService {
                 .uri("/all")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> {
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
                     Mono<String> errorMsg = clientResponse.bodyToMono(String.class);
                     errorMsg.flatMap(msg -> {
                         log.error("Error message: {}", msg);
@@ -62,7 +62,7 @@ public class GetEmployeeServiceImpl implements GetEmployeeService {
                     });
                     return Mono.error(new RuntimeException("4xx"));
                 })
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> {
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> {
                     Mono<String> errorMsg = clientResponse.bodyToMono(String.class);
                     errorMsg.flatMap(msg -> {
                         log.error("Error message: {}", msg);

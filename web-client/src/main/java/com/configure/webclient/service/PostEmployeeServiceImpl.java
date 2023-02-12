@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -28,12 +28,12 @@ public class PostEmployeeServiceImpl implements PostEmployeeService {
     @Override
     public Mono<Employee> createNewEmployee(Employee newEmployee) {
         return postEmployeeWebClient.method(HttpMethod.POST)
-                .uri("/")
+                .uri("/create")
                 .accept(MediaType.APPLICATION_JSON)
                 .headers(createHttpHeaders())
                 .body(Mono.just(newEmployee), Employee.class)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> {
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
                     Mono<String> errorMsg = clientResponse.bodyToMono(String.class);
                     errorMsg.flatMap(msg -> {
                         log.error("Error message: {}", msg);
@@ -41,7 +41,7 @@ public class PostEmployeeServiceImpl implements PostEmployeeService {
                     });
                     return Mono.error(new RuntimeException("4xx"));
                 })
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> {
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> {
                     Mono<String> errorMsg = clientResponse.bodyToMono(String.class);
                     errorMsg.flatMap(msg -> {
                         log.error("Error message: {}", msg);
