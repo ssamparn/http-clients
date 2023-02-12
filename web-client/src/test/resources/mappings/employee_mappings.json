@@ -29,7 +29,7 @@
     {
       "request": {
         "method": "POST",
-        "urlPattern": "/rest/employees/create/"
+        "urlPattern": "/rest/employees/create"
       },
       "response": {
         "status": 201,
