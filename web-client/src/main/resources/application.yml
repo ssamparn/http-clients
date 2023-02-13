@@ -19,3 +19,11 @@ client.ssl:
   keyStore: keystore.jks
   keyStorePassword: password
   type: jks
+
+resilience4j:
+  circuitbreaker:
+    minimumNumberOfCalls: 10
+    failureRateThreshold: 50
+    permittedNumberOfCallsInHalfOpenState: 2
+    waitDurationInOpenStateInSeconds: 60
+    slidingWindowSize: 20

@@ -1,6 +1,8 @@
 package com.configure.webclient.service;
 
 import com.configure.webclient.model.Employee;
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
+import io.github.resilience4j.reactor.circuitbreaker.operator.CircuitBreakerOperator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,10 +20,13 @@ import reactor.core.publisher.Mono;
 public class GetEmployeeServiceImpl implements GetEmployeeService {
 
     private final WebClient getEmployeeWebClient;
+    private final CircuitBreaker getEmployeesCircuitBreaker;
 
     @Autowired
-    public GetEmployeeServiceImpl(@Qualifier("getEmployeeWebClient") WebClient webClient) {
+    public GetEmployeeServiceImpl(@Qualifier("getEmployeeWebClient") WebClient webClient,
+                                  CircuitBreaker getEmployeesCircuitBreaker) {
         this.getEmployeeWebClient = webClient;
+        this.getEmployeesCircuitBreaker = getEmployeesCircuitBreaker;
     }
 
     @Override
@@ -45,7 +50,9 @@ public class GetEmployeeServiceImpl implements GetEmployeeService {
                         throw new RuntimeException(msg);
                     });
                     return Mono.error(new RuntimeException("5xx"));
-                }).bodyToMono(Employee.class);
+                })
+                .bodyToMono(Employee.class)
+                .transformDeferred(CircuitBreakerOperator.of(getEmployeesCircuitBreaker));
     }
 
     @Override
@@ -70,6 +77,7 @@ public class GetEmployeeServiceImpl implements GetEmployeeService {
                     });
                     return Mono.error(new RuntimeException("5xx"));
                 })
-                .bodyToFlux(Employee.class);
+                .bodyToFlux(Employee.class)
+                .transformDeferred(CircuitBreakerOperator.of(getEmployeesCircuitBreaker));
     }
 }
