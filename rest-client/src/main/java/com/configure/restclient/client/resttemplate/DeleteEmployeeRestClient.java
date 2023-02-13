@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class EmployeeDeleteRestClient extends RestClient<Void, Void> {
+public class DeleteEmployeeRestClient extends RestClient<Void, Void> {
 
     private static final String CUSTOM_HEADER = "Custom-Header";
     private static final String SERVICE = "EmployeeService";
@@ -25,7 +25,7 @@ public class EmployeeDeleteRestClient extends RestClient<Void, Void> {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public EmployeeDeleteRestClient(RestTemplate restTemplate) {
+    public DeleteEmployeeRestClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

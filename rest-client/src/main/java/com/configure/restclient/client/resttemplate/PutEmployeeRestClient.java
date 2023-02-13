@@ -4,26 +4,21 @@ import com.configure.restclient.client.RestClient;
 import com.configure.restclient.model.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Component
-public class EmployeeGetRestClient extends RestClient<String, Employee> {
+public class PutEmployeeRestClient extends RestClient<Employee, Employee> {
 
     private static final String CUSTOM_HEADER = "Custom-Header";
     private static final String SERVICE = "EmployeeService";
-    private static final String OPERATION = "GetEmployee";
+    private static final String OPERATION = "UpdateEmployee";
 
     @Value("${employeeService.http.url}")
     private String serviceUrl;
@@ -31,11 +26,11 @@ public class EmployeeGetRestClient extends RestClient<String, Employee> {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public EmployeeGetRestClient(@Qualifier("employeeServiceRestTemplate") RestTemplate restTemplate) {
+    public PutEmployeeRestClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public Employee getEmployeeById(Long employeeId) {
+    public Employee updateEmployee(Employee employeeToBeUpdated, Long employeeId) {
         Map<String, Long> pathVariables = new HashMap<>();
         pathVariables.put("id", employeeId);
 
@@ -44,20 +39,7 @@ public class EmployeeGetRestClient extends RestClient<String, Employee> {
         headers.add("Accept-Language", "en-US");
         headers.add("Custom-Header", CUSTOM_HEADER);
 
-        Employee employee = doGet(pathVariables, null, headers, Employee.class);
-        return employee;
-    }
-
-    public List<Employee> getAllEmployees(int pageNumber, int pageSize) {
-        String requestUri = serviceUrl + "?pageNumber={pageNumber}&pageSize={pageSize}";
-
-        Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("pageNumber", Integer.toString(pageNumber));
-        queryParams.put("pageSize", Long.toString(pageSize));
-
-        ResponseEntity<Employee[]> allEmployees = restTemplate.getForEntity(requestUri, Employee[].class, queryParams);
-
-        return allEmployees.getBody() != null ? Arrays.asList(allEmployees.getBody()) : Collections.emptyList();
+        return doPut(employeeToBeUpdated, pathVariables, headers, Employee.class);
     }
 
     @Override
@@ -79,4 +61,5 @@ public class EmployeeGetRestClient extends RestClient<String, Employee> {
     public String getOperation() {
         return OPERATION;
     }
+
 }

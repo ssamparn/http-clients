@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-public abstract class ReactiveRestClient<REQUEST, RESPONSE> {
+public abstract class ReactiveWebClient<REQUEST, RESPONSE> {
 
     public Mono<RESPONSE> doGet(HttpHeaders requestHeaders, Map<String, ?> pathVariables, MultiValueMap<String, String> queryParams, Class<RESPONSE> responseType) {
         return getWebClient()

@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Component
-public class EmployeePostRestClient extends RestClient<Employee, Employee> {
+public class PostEmployeeRestClient extends RestClient<Employee, Employee> {
 
     private static final String CUSTOM_HEADER = "Custom-Header";
     private static final String SERVICE = "EmployeeService";
@@ -23,7 +23,7 @@ public class EmployeePostRestClient extends RestClient<Employee, Employee> {
     private String serviceUrl;
 
     @Autowired
-    public EmployeePostRestClient(RestTemplate restTemplate) {
+    public PostEmployeeRestClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

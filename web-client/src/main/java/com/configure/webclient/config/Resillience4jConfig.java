@@ -13,7 +13,8 @@ import java.util.Optional;
 @Configuration
 public class Resillience4jConfig {
 
-    public static final String GET_EMPLOYEES_CIRCUIT_BREAKER = "getAccountsCircuitBreaker";
+    private static final String GET_EMPLOYEES_CIRCUIT_BREAKER = "getAccountsCircuitBreaker";
+    private static final String POST_EMPLOYEES_CIRCUIT_BREAKER = "postEmployeesCircuitBreaker";
     private static final String IS_UNAVAILABLE = " is unavailable";
 
     @Bean
@@ -31,6 +32,7 @@ public class Resillience4jConfig {
     public CircuitBreakerRegistry circuitBreakerRegistry(CircuitBreakerConfig circuitBreakerConfig) {
         CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.of(circuitBreakerConfig);
         circuitBreakerRegistry.circuitBreaker(GET_EMPLOYEES_CIRCUIT_BREAKER);
+        circuitBreakerRegistry.circuitBreaker(POST_EMPLOYEES_CIRCUIT_BREAKER);
         return circuitBreakerRegistry;
     }
 
@@ -41,5 +43,14 @@ public class Resillience4jConfig {
             .orElseThrow(
                     () -> new IllegalArgumentException(GET_EMPLOYEES_CIRCUIT_BREAKER + IS_UNAVAILABLE)
             );
+    }
+
+    @Bean
+    public CircuitBreaker postEmployeesCircuitBreaker(CircuitBreakerRegistry circuitBreakerRegistry) {
+        return Optional.of(circuitBreakerRegistry.find(POST_EMPLOYEES_CIRCUIT_BREAKER))
+                .get()
+                .orElseThrow(
+                        () -> new IllegalArgumentException(POST_EMPLOYEES_CIRCUIT_BREAKER + IS_UNAVAILABLE)
+                );
     }
 }

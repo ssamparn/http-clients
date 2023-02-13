@@ -34,7 +34,7 @@ public class WebClientConfig {
     private static final int TCP_KEEPINTVL_SECONDS = 60;
     private static final int TCP_KEEPCNT = 8;
 
-    @Bean
+    @Bean("getWebClient")
     public WebClient getEmployeeWebClient(@Qualifier("getEmployeeHttpClient") HttpClient httpClient,
                                @Qualifier("requestFilter") ExchangeFilterFunction requestFilter,
                                @Qualifier("responseFilter") ExchangeFilterFunction responseFilter,
@@ -52,7 +52,7 @@ public class WebClientConfig {
                 .build();
     }
 
-    @Bean
+    @Bean("postWebClient")
     public WebClient postEmployeeWebClient(@Qualifier("postEmployeeHttpClient")HttpClient httpClient,
                                @Qualifier("requestFilter") ExchangeFilterFunction requestFilter,
                                @Qualifier("responseFilter") ExchangeFilterFunction responseFilter,

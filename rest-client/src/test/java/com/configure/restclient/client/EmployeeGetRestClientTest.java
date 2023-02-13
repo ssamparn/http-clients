@@ -1,9 +1,9 @@
 //package com.configure.restclient.client;
 //
-//import com.configure.restclient.client.resttemplate.EmployeeDeleteRestClient;
-//import com.configure.restclient.client.resttemplate.EmployeeGetRestClient;
-//import com.configure.restclient.client.resttemplate.EmployeePostRestClient;
-//import com.configure.restclient.client.resttemplate.EmployeePutRestClient;
+//import com.configure.restclient.client.resttemplate.DeleteEmployeeRestClient;
+//import com.configure.restclient.client.resttemplate.GetEmployeeRestClient;
+//import com.configure.restclient.client.resttemplate.PostEmployeeRestClient;
+//import com.configure.restclient.client.resttemplate.PutEmployeeRestClient;
 //import com.configure.restclient.model.Employee;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,16 +25,16 @@
 //public class EmployeeGetRestClientTest {
 //
 //    @Autowired
-//    private EmployeeGetRestClient employeeGetRestClient;
+//    private GetEmployeeRestClient employeeGetRestClient;
 //
 //    @Autowired
-//    private EmployeePostRestClient employeePostRestClient;
+//    private PostEmployeeRestClient employeePostRestClient;
 //
 //    @Autowired
-//    private EmployeePutRestClient employeePutRestClient;
+//    private PutEmployeeRestClient employeePutRestClient;
 //
 //    @Autowired
-//    private EmployeeDeleteRestClient employeeDeleteRestClient;
+//    private DeleteEmployeeRestClient employeeDeleteRestClient;
 //
 //    @Test
 //    void getForEntityTest() {
