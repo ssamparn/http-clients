@@ -12,5 +12,5 @@ applications:
     routes:
       - route: employee-rest-service.apps.cfd06.rabobank.nl
     env:
-      JBP_CONFIG_OPEN_JDK_JRE: '{jre: { version: 11.+ } }'
+      JBP_CONFIG_OPEN_JDK_JRE: '{jre: { version: 17.+ } }'
       JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'

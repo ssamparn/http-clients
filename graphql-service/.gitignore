@@ -1,10 +1,8 @@
-web-client/HELP.md
+HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**
-!**/src/test/**
-rest-service/manifest.yml
-rest-client/manifest.yml
+!**/src/main/**/target/
+!**/src/test/**/target/
 
 ### STS ###
 .apt_generated
@@ -20,9 +18,6 @@ rest-client/manifest.yml
 *.iws
 *.iml
 *.ipr
-.idea/compiler.xml
-.idea/misc.xml
-
 
 ### NetBeans ###
 /nbproject/private/
@@ -31,6 +26,8 @@ rest-client/manifest.yml
 /nbdist/
 /.nb-gradle/
 build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/

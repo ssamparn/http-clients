@@ -21,5 +21,7 @@
         <module>rest-client</module>
         <module>rest-service</module>
         <module>web-client</module>
+        <module>graphql-service</module>
+        <module>graphql-client</module>
     </modules>
 </project>
