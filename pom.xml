@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.http</groupId>
-    <artifactId>spring-clients</artifactId>
+    <artifactId>http-clients</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
