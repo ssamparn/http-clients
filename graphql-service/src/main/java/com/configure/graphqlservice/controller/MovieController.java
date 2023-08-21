@@ -17,7 +17,7 @@ public class MovieController {
         this.movieRepository = movieRepository;
     }
 
-    @QueryMapping(name = "allmovies")
+    @QueryMapping(name = "movies")
     public List<Movie> getAllMovies() {
         return movieRepository.getAllMovies();
     }

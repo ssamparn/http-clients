@@ -14,7 +14,7 @@ public class MovieRepository {
 
     @PostConstruct
     public void initializeMockMovies() {
-        mockMovies = new ArrayList<>(List.of(
+        this.mockMovies = new ArrayList<>(List.of(
                 new Movie(1, "The Matrix", 1999, List.of("Action", "Sci-Fi"), "The Wachowskis"),
                 new Movie(2, "The Matrix Reloaded", 2003, List.of("Action", "Sci-Fi"), "The Wachowskis"),
                 new Movie(3, "The Matrix Revolutions", 2003, List.of("Action", "Sci-Fi"), "The Wachowskis"))
@@ -26,10 +26,10 @@ public class MovieRepository {
     }
 
     public Movie getById(Integer id) {
-        return mockMovies.stream().filter(movie -> movie.id() == (id)).findFirst().orElse(null);
+        return this.mockMovies.stream().filter(movie -> movie.id() == (id)).findFirst().orElse(null);
     }
 
     public void addMovie(Movie movie) {
-        mockMovies.add(movie);
+        this.mockMovies.add(movie);
     }
 }
