@@ -1,9 +1,10 @@
 package com.configure.restclient.client.resttemplate;
 
 import com.configure.restclient.client.RestClient;
+import com.configure.restclient.properties.HttpClientConnectionProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -19,14 +20,15 @@ public class DeleteEmployeeRestClient extends RestClient<Void, Void> {
     private static final String SERVICE = "EmployeeService";
     private static final String OPERATION = "DeleteEmployee";
 
-    @Value("${employeeService.http.url}")
-    private String serviceUrl;
-
     private final RestTemplate restTemplate;
+    private final HttpClientConnectionProperties employeeServiceClientConnectionProperties;
+
 
     @Autowired
-    public DeleteEmployeeRestClient(RestTemplate restTemplate) {
+    public DeleteEmployeeRestClient(@Qualifier("employeeServiceRestTemplate") RestTemplate restTemplate,
+                                    @Qualifier("employeeServiceHttpClientConnectionProperties") HttpClientConnectionProperties employeeServiceClientConnectionProperties) {
         this.restTemplate = restTemplate;
+        this.employeeServiceClientConnectionProperties = employeeServiceClientConnectionProperties;
     }
 
     public void deleteEmployee(Long employeeId) {
@@ -43,12 +45,12 @@ public class DeleteEmployeeRestClient extends RestClient<Void, Void> {
 
     @Override
     protected RestTemplate getRestTemplate() {
-        return restTemplate;
+        return this.restTemplate;
     }
 
     @Override
     protected String getBaseUrl() {
-        return serviceUrl + "/{id}";
+        return this.employeeServiceClientConnectionProperties.getUrl() + "/{id}";
     }
 
     @Override

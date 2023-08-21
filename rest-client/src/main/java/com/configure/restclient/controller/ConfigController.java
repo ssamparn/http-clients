@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ConfigController {
 
-    @Value("${employeeService.http.url:none}")
+    @Value("${employee.service.http.url:none}")
     private String url;
 
     @GetMapping("/getUrlFromConfigServer")

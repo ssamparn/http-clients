@@ -1,6 +1,6 @@
 package com.configure.restclient.config;
 
-import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ import java.util.List;
 @Configuration
 public class RestTemplateConfig {
 
-    @Bean("employeeServiceRestTemplate")
+    @Bean(name = "employeeServiceRestTemplate")
     public RestTemplate createEmployeeServiceRestTemplate(@Qualifier("employeeServiceHttpClient") CloseableHttpClient closeableHttpClient,
                                                           ObjectMappersConfig objectMappersConfig) {
         return createRestTemplate(closeableHttpClient, objectMappersConfig.createHttpMessageConverter());

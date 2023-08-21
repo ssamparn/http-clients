@@ -2,9 +2,10 @@ package com.configure.restclient.client.resttemplate;
 
 import com.configure.restclient.client.RestClient;
 import com.configure.restclient.model.Employee;
+import com.configure.restclient.properties.HttpClientConnectionProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -18,13 +19,13 @@ public class PostEmployeeRestClient extends RestClient<Employee, Employee> {
     private static final String OPERATION = "PostEmployee";
 
     private final RestTemplate restTemplate;
-
-    @Value("${employeeService.http.url}")
-    private String serviceUrl;
+    private final HttpClientConnectionProperties employeeServiceClientConnectionProperties;
 
     @Autowired
-    public PostEmployeeRestClient(RestTemplate restTemplate) {
+    public PostEmployeeRestClient(@Qualifier("employeeServiceRestTemplate") RestTemplate restTemplate,
+                                 @Qualifier("employeeServiceHttpClientConnectionProperties") HttpClientConnectionProperties employeeServiceClientConnectionProperties) {
         this.restTemplate = restTemplate;
+        this.employeeServiceClientConnectionProperties = employeeServiceClientConnectionProperties;
     }
 
     public Employee createNewEmployee(Employee newEmployee) {
@@ -39,12 +40,12 @@ public class PostEmployeeRestClient extends RestClient<Employee, Employee> {
 
     @Override
     protected RestTemplate getRestTemplate() {
-        return restTemplate;
+        return this.restTemplate;
     }
 
     @Override
     protected String getBaseUrl() {
-        return serviceUrl;
+        return this.employeeServiceClientConnectionProperties.getUrl() + "/create";
     }
 
     @Override
