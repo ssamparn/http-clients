@@ -1,1 +1,0 @@
-https://vaadin.com/blog/consuming-graphql-apis-from-java-applications
