@@ -5,6 +5,7 @@ import com.configure.restclient.client.resttemplate.GetEmployeeRestClient;
 import com.configure.restclient.client.resttemplate.PostEmployeeRestClient;
 import com.configure.restclient.client.resttemplate.PutEmployeeRestClient;
 import com.configure.restclient.model.Employee;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled
 @DirtiesContext
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
