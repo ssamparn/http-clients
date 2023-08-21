@@ -11,7 +11,7 @@ import java.util.List;
 public class ActorRepository {
 
     private List<Actor> mockActors;
-    private MovieRepository movieRepository;
+    private final MovieRepository movieRepository;
 
     public ActorRepository(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
