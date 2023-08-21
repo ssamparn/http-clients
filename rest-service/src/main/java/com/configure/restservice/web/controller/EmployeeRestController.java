@@ -48,7 +48,7 @@ public class EmployeeRestController {
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Employee>> getAllEmployees(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
-                                                                @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
+                                                                @RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
         List<EmployeeEntity> allEmployees = employeeService.getAllEmployees(pageNumber, pageSize);
         List<Employee> allEmployeesResponse = responseFactory.createGetAllEmployeesResponse(allEmployees);
         return new ResponseEntity<>(allEmployeesResponse, HttpStatus.OK);

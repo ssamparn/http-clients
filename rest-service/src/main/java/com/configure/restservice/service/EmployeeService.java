@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -28,15 +27,14 @@ public class EmployeeService {
 
     @Cacheable(value = "Get-Employee", key = "#employeeId")
     public EmployeeEntity getEmployee(Long employeeId) {
-        Optional<EmployeeEntity> employee = repository.findById(employeeId);
-        employee.orElseThrow(EmployeeNotFoundException::new);
-        return employee.get();
+        return this.repository.findById(employeeId)
+                .orElseThrow(EmployeeNotFoundException::new);
     }
 
     public List<EmployeeEntity> getAllEmployees(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-        Page<EmployeeEntity> pagedResult = repository.findAll(pageable);
+        Page<EmployeeEntity> pagedResult = this.repository.findAll(pageable);
 
         if (pagedResult.hasContent()) {
             return pagedResult.getContent();
@@ -46,7 +44,7 @@ public class EmployeeService {
     }
 
     public EmployeeEntity createNewEmployee(EmployeeEntity newEmployee) {
-        return repository.save(newEmployee);
+        return this.repository.save(newEmployee);
     }
 
     @CachePut(value = "Update-Employee", key = "#employeeId")
@@ -57,12 +55,11 @@ public class EmployeeService {
         employeeEntity.setId(employeeTobeUpdated.getId());
         employeeEntity.setYearlyIncome(employeeTobeUpdated.getYearlyIncome());
 
-        EmployeeEntity savedEntity = repository.save(employeeEntity);
-        return savedEntity;
+        return this.repository.save(employeeEntity);
     }
 
     @CacheEvict(value = "Delete-Employee")
     public void deleteEmployee(Long employeeId) {
-        repository.deleteById(employeeId);
+        this.repository.deleteById(employeeId);
     }
 }
