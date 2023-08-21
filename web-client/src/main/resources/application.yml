@@ -22,8 +22,13 @@ client.ssl:
 
 resilience4j:
   circuitbreaker:
-    minimumNumberOfCalls: 10
-    failureRateThreshold: 50
-    permittedNumberOfCallsInHalfOpenState: 2
-    waitDurationInOpenStateInSeconds: 60
-    slidingWindowSize: 20
+    config:
+      minimumNumberOfCalls: 9
+      failureRateThreshold: 50
+      permittedNumberOfCallsInHalfOpenState: 2
+      waitDurationInOpenStateInSeconds: 60
+      slidingWindowSize: 20
+  retry:
+    config:
+      maximumAttempts: 3
+      waitDurationBetweenRetryAttempts: PT0.100S

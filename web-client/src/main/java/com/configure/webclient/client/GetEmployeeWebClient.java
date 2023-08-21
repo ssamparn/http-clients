@@ -3,6 +3,8 @@ package com.configure.webclient.client;
 import com.configure.webclient.model.Employee;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.reactor.circuitbreaker.operator.CircuitBreakerOperator;
+import io.github.resilience4j.reactor.retry.RetryOperator;
+import io.github.resilience4j.retry.Retry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,12 +23,15 @@ public class GetEmployeeWebClient extends ReactiveWebClient<String, Employee> {
 
     private final WebClient getEmployeeWebClient;
     private final CircuitBreaker getEmployeesCircuitBreaker;
+    private final Retry getEmployeesRetry;
 
     @Autowired
     public GetEmployeeWebClient(@Qualifier("getWebClient") WebClient getEmployeeWebClient,
-                                CircuitBreaker getEmployeesCircuitBreaker) {
+                                @Qualifier("getEmployeesCircuitBreaker") CircuitBreaker getEmployeesCircuitBreaker,
+                                @Qualifier("getEmployeesRetry") Retry getEmployeesRetry) {
         this.getEmployeeWebClient = getEmployeeWebClient;
         this.getEmployeesCircuitBreaker = getEmployeesCircuitBreaker;
+        this.getEmployeesRetry = getEmployeesRetry;
     }
 
     public Mono<Employee> getEmployee(String employeeId) {
@@ -51,7 +56,8 @@ public class GetEmployeeWebClient extends ReactiveWebClient<String, Employee> {
                     return Mono.error(new RuntimeException("5xx"));
                 })
                 .bodyToMono(Employee.class)
-                .transformDeferred(CircuitBreakerOperator.of(getEmployeesCircuitBreaker));
+                .transformDeferred(CircuitBreakerOperator.of(getEmployeesCircuitBreaker))
+                .transformDeferred(RetryOperator.of(getEmployeesRetry));
     }
 
     public Flux<Employee> getEmployees() {
@@ -76,7 +82,8 @@ public class GetEmployeeWebClient extends ReactiveWebClient<String, Employee> {
                     return Mono.error(new RuntimeException("5xx"));
                 })
                 .bodyToFlux(Employee.class)
-                .transformDeferred(CircuitBreakerOperator.of(getEmployeesCircuitBreaker));
+                .transformDeferred(CircuitBreakerOperator.of(getEmployeesCircuitBreaker))
+                .transformDeferred(RetryOperator.of(getEmployeesRetry));
     }
 
     @Override

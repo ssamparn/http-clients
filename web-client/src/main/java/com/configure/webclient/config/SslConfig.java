@@ -19,12 +19,12 @@ import java.security.UnrecoverableKeyException;
 
 @Slf4j
 @Configuration
-public class SSLConfig {
+public class SslConfig {
 
     private final KeyStoreProperties keystoreProperties;
 
     @Autowired
-    public SSLConfig(KeyStoreProperties keystoreProperties) {
+    public SslConfig(KeyStoreProperties keystoreProperties) {
         this.keystoreProperties = keystoreProperties;
     }
 

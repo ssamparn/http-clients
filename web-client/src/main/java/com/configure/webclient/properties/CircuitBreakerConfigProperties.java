@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties("resilience4j.circuitbreaker")
-public class CircuitBreakerProperties {
+@ConfigurationProperties("resilience4j.circuitbreaker.config")
+public class CircuitBreakerConfigProperties {
 
     private int minimumNumberOfCalls;
 

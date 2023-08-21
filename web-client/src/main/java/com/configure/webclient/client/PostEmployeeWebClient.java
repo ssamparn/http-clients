@@ -2,6 +2,9 @@ package com.configure.webclient.client;
 
 import com.configure.webclient.model.Employee;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
+import io.github.resilience4j.reactor.circuitbreaker.operator.CircuitBreakerOperator;
+import io.github.resilience4j.reactor.retry.RetryOperator;
+import io.github.resilience4j.retry.Retry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -20,11 +23,14 @@ public class PostEmployeeWebClient extends ReactiveWebClient<Employee, Employee>
 
     private final WebClient postEmployeeWebClient;
     private final CircuitBreaker postEmployeesCircuitBreaker;
+    private final Retry postEmployeesRetry;
 
     public PostEmployeeWebClient(@Qualifier("postWebClient") WebClient postEmployeeWebClient,
-                                 CircuitBreaker postEmployeesCircuitBreaker) {
+                                 @Qualifier("postEmployeesCircuitBreaker") CircuitBreaker postEmployeesCircuitBreaker,
+                                 @Qualifier("postEmployeesRetry") Retry postEmployeesRetry) {
         this.postEmployeeWebClient = postEmployeeWebClient;
         this.postEmployeesCircuitBreaker = postEmployeesCircuitBreaker;
+        this.postEmployeesRetry = postEmployeesRetry;
     }
 
     public Mono<Employee> newEmployee(Employee newEmployee) {
@@ -50,7 +56,9 @@ public class PostEmployeeWebClient extends ReactiveWebClient<Employee, Employee>
                     });
                     return Mono.error(new RuntimeException("5xx"));
                 })
-                .bodyToMono(Employee.class);
+                .bodyToMono(Employee.class)
+                .transformDeferred(CircuitBreakerOperator.of(postEmployeesCircuitBreaker))
+                .transformDeferred(RetryOperator.of(postEmployeesRetry));
     }
 
     private Consumer<HttpHeaders> createHttpHeaders() {
