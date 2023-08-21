@@ -17,12 +17,17 @@ public class MovieController {
         this.movieRepository = movieRepository;
     }
 
-    @QueryMapping
-    public Movie movieById(@Argument Integer id) {
+    @QueryMapping(name = "allmovies")
+    public List<Movie> getAllMovies() {
+        return movieRepository.getAllMovies();
+    }
+
+    @QueryMapping(name = "moviebyid")
+    public Movie getMovieById(@Argument Integer id) {
         return movieRepository.getById(id);
     }
 
-    @MutationMapping
+    @MutationMapping(name = "addmovie")
     public Movie addMovie(@Argument Integer id, @Argument String title, @Argument Integer year, @Argument List<String> genres, @Argument String director) {
         Movie movie = new Movie(id, title, year, genres, director);
         movieRepository.addMovie(movie);

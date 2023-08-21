@@ -15,8 +15,8 @@ public class ActorController {
         this.actorRepository = actorRepository;
     }
 
-    @QueryMapping
-    public Actor actorById(@Argument Integer id) {
+    @QueryMapping(name = "actorbyid")
+    public Actor getActorById(@Argument Integer id) {
         return actorRepository.getById(id);
     }
 

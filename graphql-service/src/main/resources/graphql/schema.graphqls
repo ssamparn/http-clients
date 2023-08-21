@@ -13,12 +13,13 @@ type Actor {
 }
 
 type Query {
-    movieById(id: ID!): Movie
-    actorById(id: ID!): Actor
+    allmovies: [Movie]
+    moviebyid (id: ID!): Movie
+    actorbyid (id: ID!): Actor
 }
 
 type Mutation {
-    addMovie(
+    addmovie (
         id: ID!
         title: String!
         year: Int!
