@@ -22,8 +22,9 @@ public class PostEmployeeServiceImpl implements PostEmployeeService {
     }
 
     @Override
-    public Mono<Employee> createNewEmployee(Employee newEmployee) {
-        return postEmployeeWebClient.newEmployee(newEmployee);}
+    public Mono<Employee> createNewEmployee(Mono<Employee> employeeMono) {
+        return postEmployeeWebClient.newEmployee(employeeMono);
+    }
 
     private Consumer<HttpHeaders> createHttpHeaders() {
         return httpHeaders -> {

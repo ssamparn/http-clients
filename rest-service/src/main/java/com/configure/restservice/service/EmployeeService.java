@@ -25,7 +25,7 @@ public class EmployeeService {
         this.repository = repository;
     }
 
-    @Cacheable(value = "Get-Employee", key = "#employeeId")
+    @Cacheable(cacheNames = "Get-Employee", key = "#employeeId")
     public EmployeeEntity getEmployee(Long employeeId) {
         return this.repository.findById(employeeId)
                 .orElseThrow(EmployeeNotFoundException::new);

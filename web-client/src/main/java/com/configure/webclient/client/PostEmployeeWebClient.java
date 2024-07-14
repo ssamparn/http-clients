@@ -33,12 +33,12 @@ public class PostEmployeeWebClient extends ReactiveWebClient<Employee, Employee>
         this.postEmployeesRetry = postEmployeesRetry;
     }
 
-    public Mono<Employee> newEmployee(Employee newEmployee) {
+    public Mono<Employee> newEmployee(Mono<Employee> employeeMono) {
         return postEmployeeWebClient.method(HttpMethod.POST)
                 .uri("/create")
                 .accept(MediaType.APPLICATION_JSON)
                 .headers(createHttpHeaders())
-                .body(Mono.just(newEmployee), Employee.class)
+                .body(employeeMono, Employee.class)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
                     Mono<String> errorMsg = clientResponse.bodyToMono(String.class);

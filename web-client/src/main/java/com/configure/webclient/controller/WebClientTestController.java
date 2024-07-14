@@ -26,26 +26,17 @@ public class WebClientTestController {
 
     @GetMapping(path = "/get-employee/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<Employee> getEmployeeById(@PathVariable(name = "employeeId") String employeeId) {
-
-        Mono<Employee> employeeById = getEmployeeService.getEmployeeById(employeeId);
-
-        return employeeById;
+        return getEmployeeService.getEmployeeById(employeeId);
     }
 
     @GetMapping(path = "/get-all-employee", produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<Employee> getEmployeeById() {
-
-        Flux<Employee> allEmployees = getEmployeeService.getAllEmployees();
-
-        return allEmployees;
+        return getEmployeeService.getAllEmployees();
     }
 
     @PostMapping(path = "/create-employee", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Employee> createEmployee(@RequestBody Employee employee) {
-
-        Mono<Employee> newEmployee = postEmployeeService.createNewEmployee(employee);
-
-        return newEmployee;
+    public Mono<Employee> createEmployee(@RequestBody Mono<Employee> employeeMono) {
+        return postEmployeeService.createNewEmployee(employeeMono);
     }
 }

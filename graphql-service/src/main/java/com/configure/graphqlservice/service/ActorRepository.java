@@ -2,20 +2,18 @@ package com.configure.graphqlservice.service;
 
 import com.configure.graphqlservice.model.Actor;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ActorRepository {
 
     private List<Actor> mockActors;
     private final MovieRepository movieRepository;
-
-    public ActorRepository(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
-    }
 
     @PostConstruct
     private void initializeMockActors() {
