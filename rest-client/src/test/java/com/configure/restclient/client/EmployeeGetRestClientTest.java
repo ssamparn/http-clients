@@ -40,7 +40,7 @@ public class EmployeeGetRestClientTest {
 
     @Test
     void getForEntityTest() {
-        Employee employee = employeeGetRestClient.getEmployeeById(123L);
+        Employee employee = employeeGetRestClient.getEmployeeById(100L);
         assertNotNull(employee);
         assertNotNull(employee);
         assertEquals("Sashank", employee.getFirstName());
@@ -64,10 +64,10 @@ public class EmployeeGetRestClientTest {
 
     @Test
     void getForObjectTest() {
-        Employee employeeObject = employeeGetRestClient.getEmployeeById(524L);
+        Employee employeeObject = employeeGetRestClient.getEmployeeById(500L);
 
         assertNotNull(employeeObject);
-        assertEquals("Rohan", employeeObject.getFirstName());
+        assertEquals("Raghav", employeeObject.getFirstName());
     }
 
     @Test
@@ -106,20 +106,20 @@ public class EmployeeGetRestClientTest {
 
     @Test
     public void putTest() {
-        Employee employeeEntity = employeeGetRestClient.getEmployeeById(4L);
+        Employee employeeEntity = employeeGetRestClient.getEmployeeById(2000L);
         employeeEntity.setFirstName("Robb");
         employeeEntity.setLastName("Stark");
         employeeEntity.setYearlyIncome(99999L);
 
-        employeePutRestClient.updateEmployee(employeeEntity, 4L);
+        employeePutRestClient.updateEmployee(employeeEntity, 1000L);
 
-        Employee updatedEmployee = employeeGetRestClient.getEmployeeById(4L);
+        Employee updatedEmployee = employeeGetRestClient.getEmployeeById(1000L);
 
         assertNotNull(updatedEmployee);
-        assertEquals(4, updatedEmployee.getId());
-        assertEquals("Rohan", updatedEmployee.getFirstName());
-        assertEquals("Samantray", updatedEmployee.getLastName());
-        assertEquals(350000, updatedEmployee.getYearlyIncome());
+        assertEquals(1000, updatedEmployee.getId());
+        assertEquals("Robb", updatedEmployee.getFirstName());
+        assertEquals("Stark", updatedEmployee.getLastName());
+        assertEquals(99999, updatedEmployee.getYearlyIncome());
     }
 
     @Test
