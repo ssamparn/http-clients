@@ -1,6 +1,7 @@
 package com.configure.restservice.service;
 
 import com.configure.restservice.entity.EmployeeEntity;
+import com.configure.restservice.model.Employee;
 import com.configure.restservice.repository.EmployeeRepository;
 import com.configure.restservice.web.exception.EmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,17 +44,21 @@ public class EmployeeService {
         }
     }
 
-    public EmployeeEntity createNewEmployee(EmployeeEntity newEmployee) {
-        return this.repository.save(newEmployee);
+    public EmployeeEntity createNewEmployee(Employee newEmployee) {
+        EmployeeEntity entity = new EmployeeEntity();
+        entity.setFirstName(newEmployee.firstName());
+        entity.setLastName(newEmployee.lastName());
+        entity.setYearlyIncome(newEmployee.yearlyIncome());
+
+        return this.repository.save(entity);
     }
 
     @CachePut(value = "Update-Employee", key = "#employeeId")
-    public EmployeeEntity updateEmployee(Long employeeId, EmployeeEntity employeeTobeUpdated) {
+    public EmployeeEntity updateEmployee(Long employeeId, Employee employee) {
         EmployeeEntity employeeEntity = repository.findById(employeeId).orElseThrow(EmployeeNotFoundException::new);
-        employeeEntity.setFirstName(employeeTobeUpdated.getFirstName());
-        employeeEntity.setLastName(employeeTobeUpdated.getLastName());
-        employeeEntity.setId(employeeTobeUpdated.getId());
-        employeeEntity.setYearlyIncome(employeeTobeUpdated.getYearlyIncome());
+        employeeEntity.setFirstName(employee.firstName());
+        employeeEntity.setLastName(employee.lastName());
+        employeeEntity.setYearlyIncome(employee.yearlyIncome());
 
         return this.repository.save(employeeEntity);
     }

@@ -21,14 +21,13 @@ public class EmployeeServiceResponseFactory {
 
     public List<Employee> createGetAllEmployeesResponse(List<EmployeeEntity> allEmployees) {
         return allEmployees.stream()
-                .map(employeeEntity -> {
-                    Employee employee = new Employee();
-                    employee.setId(employeeEntity.getId());
-                    employee.setFirstName(employeeEntity.getFirstName());
-                    employee.setLastName(employeeEntity.getLastName());
-                    employee.setYearlyIncome(employeeEntity.getYearlyIncome());
-                    return employee;
-                }).collect(Collectors.toList());
+                .map(employeeEntity -> Employee.builder()
+                        .id(employeeEntity.getId())
+                        .firstName(employeeEntity.getFirstName())
+                        .lastName(employeeEntity.getLastName())
+                        .yearlyIncome(employeeEntity.getYearlyIncome())
+                        .build()
+                ).collect(Collectors.toList());
     }
 
     public Employee createNewEmployeeResponse(EmployeeEntity employeeEntity) {
