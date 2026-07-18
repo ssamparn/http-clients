@@ -3,21 +3,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.0</version>
-		<relativePath/>
+		<groupId>com.http</groupId>
+		<artifactId>http-clients</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<groupId>com.configure</groupId>
 	<artifactId>graphql-service</artifactId>
-	<version>1.0.0</version>
 	<name>Graphql Service</name>
 	<description>graphql-service</description>
-
-	<properties>
-		<java.version>21</java.version>
-	</properties>
 
 	<dependencies>
 		<dependency>
@@ -42,16 +37,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webflux</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.graphql</groupId>
-			<artifactId>spring-graphql-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

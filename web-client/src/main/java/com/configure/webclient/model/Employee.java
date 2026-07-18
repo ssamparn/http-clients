@@ -1,23 +1,12 @@
 package com.configure.webclient.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
+import java.io.Serial;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Employee implements Serializable {
+public record Employee(Long id, String firstName, String lastName, Long yearlyIncome) implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -6209873697684245092L;
 
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private Long yearlyIncome;
 
 }

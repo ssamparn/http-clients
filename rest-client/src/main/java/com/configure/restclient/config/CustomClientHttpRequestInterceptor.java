@@ -51,6 +51,4 @@ public class CustomClientHttpRequestInterceptor implements ClientHttpRequestInte
             log.debug("=========================== response end ============================================");
         }
     }
-
-
 }

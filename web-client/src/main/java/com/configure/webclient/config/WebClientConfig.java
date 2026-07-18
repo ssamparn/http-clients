@@ -2,7 +2,6 @@ package com.configure.webclient.config;
 
 import com.configure.webclient.properties.ClientConnectionProperties;
 import io.netty.channel.ChannelOption;
-import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
@@ -30,9 +29,6 @@ public class WebClientConfig {
     public static final int MAX_BUFFER_SIZE_BYTES = 2 * 1024 * 1024; // 2 mb
     private static final int ACQUIRE_TIMEOUT_SECONDS = 5;
     private static final int MAX_CONNECTIONS = 2000;
-    private static final int TCP_KEEPIDLE_SECONDS = 3000;
-    private static final int TCP_KEEPINTVL_SECONDS = 60;
-    private static final int TCP_KEEPCNT = 8;
 
     @Bean("getWebClient")
     public WebClient getEmployeeWebClient(@Qualifier("getEmployeeHttpClient") HttpClient httpClient,
@@ -53,7 +49,7 @@ public class WebClientConfig {
     }
 
     @Bean("postWebClient")
-    public WebClient postEmployeeWebClient(@Qualifier("postEmployeeHttpClient")HttpClient httpClient,
+    public WebClient postEmployeeWebClient(@Qualifier("postEmployeeHttpClient") HttpClient httpClient,
                                @Qualifier("requestFilter") ExchangeFilterFunction requestFilter,
                                @Qualifier("responseFilter") ExchangeFilterFunction responseFilter,
                                @Qualifier("postEmployeeConnectionProperties") ClientConnectionProperties connectionProperties) {
@@ -87,9 +83,6 @@ public class WebClientConfig {
             .wiretap(true)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectionProperties.getConnectionTimeout())
             .option(ChannelOption.SO_KEEPALIVE, true)
-            .option(EpollChannelOption.TCP_KEEPIDLE, TCP_KEEPIDLE_SECONDS)
-            .option(EpollChannelOption.TCP_KEEPINTVL, TCP_KEEPINTVL_SECONDS)
-            .option(EpollChannelOption.TCP_KEEPCNT, TCP_KEEPCNT)
             .doOnConnected(connection ->
                     connection.addHandlerLast(new ReadTimeoutHandler(connectionProperties.getReadTimeout(), MILLISECONDS))
                             .addHandlerLast(new WriteTimeoutHandler(connectionProperties.getWriteTimeout(), MILLISECONDS)));
@@ -112,9 +105,6 @@ public class WebClientConfig {
                 .wiretap(true)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectionProperties.getConnectionTimeout())
                 .option(ChannelOption.SO_KEEPALIVE, true)
-                .option(EpollChannelOption.TCP_KEEPIDLE, TCP_KEEPIDLE_SECONDS)
-                .option(EpollChannelOption.TCP_KEEPINTVL, TCP_KEEPINTVL_SECONDS)
-                .option(EpollChannelOption.TCP_KEEPCNT, TCP_KEEPCNT)
                 .doOnConnected(connection ->
                         connection.addHandlerLast(new ReadTimeoutHandler(connectionProperties.getReadTimeout(), MILLISECONDS))
                                 .addHandlerLast(new WriteTimeoutHandler(connectionProperties.getWriteTimeout(), MILLISECONDS)));

@@ -9,7 +9,7 @@ public class GetEmployeeServiceIntegrationTest extends AbstractIntegrationTest {
     void getEmployeeById() {
         webTestClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/webclient/get-employee/{employeeId}")
-                        .build("employeeId"))
+                        .build(100))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Employee.class);

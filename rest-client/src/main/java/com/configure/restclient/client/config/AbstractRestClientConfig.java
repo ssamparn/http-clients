@@ -1,5 +1,6 @@
 package com.configure.restclient.client.config;
 
+import com.configure.restclient.config.CustomClientErrorHandler;
 import com.configure.restclient.properties.HttpClientConnectionProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.ConnectionKeepAliveStrategy;
@@ -8,42 +9,72 @@ import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.ClientTlsStrategyBuilder;
 import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HeaderElement;
 import org.apache.hc.core5.http.HttpResponse;
-import org.apache.hc.core5.http.config.Registry;
+import org.apache.hc.core5.http.io.SocketConfig;
 import org.apache.hc.core5.http.message.BasicHeaderElementIterator;
 import org.apache.hc.core5.util.TimeValue;
 import org.apache.hc.core5.util.Timeout;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.client.RestClient;
 
+import javax.net.ssl.SSLContext;
 import java.time.Duration;
 import java.util.Iterator;
+import java.util.List;
 
 @Slf4j
 @EnableScheduling
 public abstract class AbstractRestClientConfig {
 
-    private PoolingHttpClientConnectionManager connectionManager;
-    private HttpClientConnectionProperties connectionProperties;
+    private PoolingHttpClientConnectionManager clientConnectionManager;
+    private HttpClientConnectionProperties clientConnectionProperties;
 
-    public CloseableHttpClient closeableHttpClient(Registry<ConnectionSocketFactory> registry, HttpClientConnectionProperties connectionProperties) {
-        PoolingHttpClientConnectionManager clientConnectionManager = new PoolingHttpClientConnectionManager(registry);
-        clientConnectionManager.setMaxTotal(connectionProperties.getMaxPoolSize());
-        clientConnectionManager.setDefaultMaxPerRoute(connectionProperties.getMaxTotalConnections());
-        clientConnectionManager.setDefaultConnectionConfig(ConnectionConfig.custom()
-                .setConnectTimeout(Timeout.ofMilliseconds(connectionProperties.getConnectionTimeoutMs()))
-                .setSocketTimeout(Timeout.ofMilliseconds(connectionProperties.getSocketTimeoutMs()))
-                .build());
+    public RestClient createRestClient(HttpClientConnectionProperties clientConnectionProperties,
+                                       SSLContext sslContext,
+                                       List<ClientHttpRequestInterceptor> interceptors) {
+        RestClient.Builder restClientBuilder = RestClient.builder()
+                .baseUrl(clientConnectionProperties.getUrl())
+                .defaultHeader("User-Agent", "EmployeeRestClient")
+                .defaultHeader("Accept-Language", "en-US")
+                .defaultHeader("Custom-Header", "Custom-Header")
+                .defaultStatusHandler(new CustomClientErrorHandler())
+                .requestInterceptors(clientHttpRequestInterceptors -> clientHttpRequestInterceptors.addAll(interceptors));
 
-        this.connectionManager = clientConnectionManager;
-        this.connectionProperties = connectionProperties;
+        CloseableHttpClient apacheHttpClient = this.closeableHttpClient(clientConnectionProperties, sslContext);
+        restClientBuilder.requestFactory(new HttpComponentsClientHttpRequestFactory(apacheHttpClient));
+
+        return restClientBuilder.build();
+    }
+
+    private CloseableHttpClient closeableHttpClient(HttpClientConnectionProperties clientConnectionProperties,
+                                                       SSLContext sslContext) {
+        PoolingHttpClientConnectionManagerBuilder clientConnectionManagerBuilder = PoolingHttpClientConnectionManagerBuilder.create()
+                .setMaxConnTotal(clientConnectionProperties.getMaxPoolSize())
+                .setMaxConnPerRoute(clientConnectionProperties.getMaxTotalConnections())
+                .setDefaultConnectionConfig(ConnectionConfig.custom()
+                        .setConnectTimeout(Timeout.ofMilliseconds(clientConnectionProperties.getConnectionTimeoutMs()))
+                        .setSocketTimeout(Timeout.ofMilliseconds(clientConnectionProperties.getSocketTimeoutMs()))
+                        .build())
+                .setDefaultSocketConfig(SocketConfig.custom()
+                        .setSoTimeout(Timeout.ofMilliseconds(clientConnectionProperties.getSocketTimeoutMs()))
+                        .build())
+                .setTlsSocketStrategy(ClientTlsStrategyBuilder.create()
+                        .setSslContext(sslContext)
+                        .buildClassic());
+
+        this.clientConnectionManager = clientConnectionManagerBuilder.build();
+        this.clientConnectionProperties = clientConnectionProperties;
+
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(Timeout.ofMilliseconds(connectionProperties.getConnectionTimeoutMs()))
-                .setConnectionRequestTimeout(Timeout.ofMilliseconds(connectionProperties.getConnectionRequestTimeoutMs()))
-                .setResponseTimeout(Timeout.ofMilliseconds(connectionProperties.getSocketTimeoutMs()))
+                .setConnectionRequestTimeout(Timeout.ofMilliseconds(clientConnectionProperties.getConnectionRequestTimeoutMs()))
+                .setResponseTimeout(Timeout.ofMilliseconds(clientConnectionProperties.getSocketTimeoutMs()))
                 .setExpectContinueEnabled(true)
                 .build();
 
@@ -68,7 +99,7 @@ public abstract class AbstractRestClientConfig {
                 return Duration.ofSeconds(Long.parseLong(element.getValue())).toMillis();
             }
         }
-        return this.connectionProperties.getDefaultKeepAliveTime().toMillis();
+        return this.clientConnectionProperties.getDefaultKeepAliveTime().toMillis();
     }
 
     public Runnable idleConnectionMonitor() {
@@ -77,15 +108,15 @@ public abstract class AbstractRestClientConfig {
             @Scheduled(fixedDelay = 10000)
             public void run() {
                 try {
-                    if (connectionManager != null) {
+                    if (clientConnectionManager != null) {
                         log.trace("run IdleConnectionMonitor - Closing expired and idle connections...");
-                        connectionManager.closeExpired();
-                        connectionManager.closeIdle(TimeValue.ofMilliseconds(connectionProperties.getIdleConnectionWaitTime().toMillis()));
+                        clientConnectionManager.closeExpired();
+                        clientConnectionManager.closeIdle(TimeValue.ofMilliseconds(clientConnectionProperties.getIdleConnectionWaitTime().toMillis()));
                     } else {
                         log.trace("run IdleConnectionMonitor - Http Client Connection manager is not initialised");
                     }
                 } catch (Exception e) {
-                    log.error("run IdleConnectionMonitor - Exception occurred. msg={}, e={}", e.getMessage(), e);
+                    log.error("run IdleConnectionMonitor - Exception occurred. msg={}, e={}", e.getMessage(), e.getStackTrace());
                 }
             }
         };

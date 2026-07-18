@@ -1,26 +1,19 @@
 package com.configure.graphqlclient.client;
 
+import com.configure.graphqlclient.model.AddMovieRequest;
 import com.configure.graphqlclient.model.Movie;
+import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class MovieGraphQlClient {
 
     private final HttpGraphQlClient graphQlClient;
-
-    public MovieGraphQlClient() {
-        WebClient webClient = WebClient.builder()
-                .baseUrl("http://localhost:9090/graphql")
-                .build();
-
-        this.graphQlClient = HttpGraphQlClient.builder(webClient)
-                .build();
-    }
 
     public Mono<List<Movie>> getAllMovies() {
         String graphQlQuery = """
@@ -40,15 +33,15 @@ public class MovieGraphQlClient {
                 .toEntityList(Movie.class);
     }
 
-    public Mono<Movie> addMovie() {
+    public Mono<Movie> addMovie(AddMovieRequest request) {
         String graphQlMutation = """
-                mutation {
+                mutation AddMovie($id: ID!, $title: String!, $year: Int!, $genres: [String]!, $director: String!) {
                    addmovie (
-                     id: 6
-                     title: "Dark Knight"
-                     year: 2010
-                     genres: ["Action", "SciFi"]
-                     director: "Christopher Nolan"
+                     id: $id
+                     title: $title
+                     year: $year
+                     genres: $genres
+                     director: $director
                    ) {
                      id
                      title
@@ -60,6 +53,11 @@ public class MovieGraphQlClient {
                 """;
 
         return this.graphQlClient.document(graphQlMutation)
+                .variable("id", request.id())
+                .variable("title", request.title())
+                .variable("year", request.year())
+                .variable("genres", request.genres())
+                .variable("director", request.director())
                 .retrieve("addmovie")
                 .toEntity(Movie.class);
     }

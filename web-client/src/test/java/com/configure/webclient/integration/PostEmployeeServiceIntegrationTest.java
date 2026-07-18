@@ -9,12 +9,7 @@ public class PostEmployeeServiceIntegrationTest extends AbstractIntegrationTest 
 
     @Test
     void createEmployee() {
-        Employee employee = Employee.builder()
-                .id(1L)
-                .firstName("Shwetank")
-                .lastName("Kumar")
-                .yearlyIncome(75000L)
-                .build();
+        Employee employee = new Employee(1L, "Shwetank", "Kumar", 75000L);
 
         webTestClient.post()
                 .uri("/webclient/create-employee")

@@ -5,12 +5,7 @@ import com.configure.restclient.exception.SslConfigException;
 import com.configure.restclient.properties.KeyStoreProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64InputStream;
-import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
-import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
 import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
-import org.apache.hc.core5.http.config.Registry;
-import org.apache.hc.core5.http.config.RegistryBuilder;
 import org.apache.hc.core5.ssl.SSLContextBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -39,23 +34,6 @@ public class SslConfig {
     }
 
     @Bean
-    public Registry<ConnectionSocketFactory> registry(SSLContext sslContext) {
-        return RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("http", PlainConnectionSocketFactory.INSTANCE)
-                .register("https", new SSLConnectionSocketFactory(sslContext))
-                .build();
-    }
-
-    @Bean
-    public Registry<ConnectionSocketFactory> registryForIpi(
-            SSLContext sslContextForIpi) {
-        return RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("http", PlainConnectionSocketFactory.INSTANCE)
-                .register("https", new SSLConnectionSocketFactory(sslContextForIpi))
-                .build();
-    }
-
-    @Bean
     public SSLContext sslContext(
             KeyStoreProperties keyStoreProperties,
             @Qualifier("keyStore") KeyStore keyStore,
@@ -63,24 +41,6 @@ public class SslConfig {
 
         try {
             return new SSLContextBuilder()
-                    .loadKeyMaterial(keyStore, keyStoreProperties.getKeyStorePassword().toCharArray())
-                    .loadTrustMaterial(trustStore, TrustSelfSignedStrategy.INSTANCE)
-                    .build();
-        } catch (NoSuchAlgorithmException | KeyStoreException |
-                 UnrecoverableKeyException | KeyManagementException e) {
-            throw new ConfigurationException("Failed to create SSL Context", e);
-        }
-    }
-
-    @Bean
-    public SSLContext sslContextForIpi(
-            KeyStoreProperties keyStoreProperties,
-            @Qualifier("keyStore") KeyStore keyStore,
-            @Qualifier("trustStore") KeyStore trustStore) throws ConfigurationException {
-
-        try {
-            return new SSLContextBuilder()
-                    .setProtocol("TLSv1.2")
                     .loadKeyMaterial(keyStore, keyStoreProperties.getKeyStorePassword().toCharArray())
                     .loadTrustMaterial(trustStore, TrustSelfSignedStrategy.INSTANCE)
                     .build();

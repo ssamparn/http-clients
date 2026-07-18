@@ -1,11 +1,13 @@
 package com.configure.graphqlclient.controller;
 
 import com.configure.graphqlclient.client.MovieGraphQlClient;
+import com.configure.graphqlclient.model.AddMovieRequest;
 import com.configure.graphqlclient.model.Movie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
@@ -24,8 +26,8 @@ public class MovieRestController {
         return graphQlClient.getAllMovies();
     }
 
-    @PostMapping(path = "/add-movie", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<Movie> addMovie() {
-        return graphQlClient.addMovie();
+    @PostMapping(path = "/add-movie", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<Movie> addMovie(@RequestBody AddMovieRequest request) {
+        return graphQlClient.addMovie(request);
     }
 }
