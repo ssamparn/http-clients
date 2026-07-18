@@ -89,5 +89,6 @@
         <module>web-client</module>
         <module>graphql-service</module>
         <module>graphql-client</module>
+        <module>soap-service</module>
     </modules>
 </project>

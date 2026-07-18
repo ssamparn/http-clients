@@ -14,7 +14,6 @@
 	<name>Graphql Client</name>
 	<description>graphql-client</description>
 
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
