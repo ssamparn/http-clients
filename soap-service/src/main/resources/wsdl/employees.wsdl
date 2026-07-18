@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:tns="http://configure.com/soapservice/employees"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://configure.com/soapservice/employees"
+        name="employees">
+
+    <wsdl:types>
+        <xsd:schema>
+            <xsd:import namespace="http://configure.com/soapservice/employees" schemaLocation="../xsd/employees.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="GetEmployeeByIdRequest">
+        <wsdl:part name="parameters" element="tns:GetEmployeeByIdRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="GetEmployeeByIdResponse">
+        <wsdl:part name="parameters" element="tns:GetEmployeeByIdResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="CreateEmployeeRequest">
+        <wsdl:part name="parameters" element="tns:CreateEmployeeRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="CreateEmployeeResponse">
+        <wsdl:part name="parameters" element="tns:CreateEmployeeResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="GetAllEmployeesRequest">
+        <wsdl:part name="parameters" element="tns:GetAllEmployeesRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="GetAllEmployeesResponse">
+        <wsdl:part name="parameters" element="tns:GetAllEmployeesResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="EmployeesPort">
+        <wsdl:operation name="GetEmployeeById">
+            <wsdl:input message="tns:GetEmployeeByIdRequest"/>
+            <wsdl:output message="tns:GetEmployeeByIdResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateEmployee">
+            <wsdl:input message="tns:CreateEmployeeRequest"/>
+            <wsdl:output message="tns:CreateEmployeeResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetAllEmployees">
+            <wsdl:input message="tns:GetAllEmployeesRequest"/>
+            <wsdl:output message="tns:GetAllEmployeesResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="EmployeesPortSoap11" type="tns:EmployeesPort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <wsdl:operation name="GetEmployeeById">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="CreateEmployee">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="GetAllEmployees">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="EmployeesService">
+        <wsdl:port binding="tns:EmployeesPortSoap11" name="EmployeesPortSoap11">
+            <soap:address location="http://localhost:7070/ws"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
+
