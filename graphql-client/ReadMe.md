@@ -23,12 +23,6 @@ This module calls the GraphQL service at:
 
 The endpoint is now externalized via `graphql.client.url` in `application.yml`.
 
-## Important classes
-
-- `src/main/java/com/configure/graphqlclient/client/MovieGraphQlClient.java`
-- `src/main/java/com/configure/graphqlclient/controller/MovieRestController.java`
-- `src/main/resources/application.yml`
-
 ## Exposed REST endpoints
 
 | Method | Path | Purpose |
@@ -36,28 +30,10 @@ The endpoint is now externalized via `graphql.client.url` in `application.yml`.
 | `GET` | `/get-all-movies` | Fetch all movies through GraphQL |
 | `POST` | `/add-movie` | Add a movie through GraphQL using a JSON request body |
 
-## Sample requests
-
-```bash
-curl http://localhost:9091/get-all-movies
-curl -X POST http://localhost:9091/add-movie \
-  -H 'Content-Type: application/json' \
-  -d '{"id":6,"title":"Dark Knight","year":2010,"genres":["Action","SciFi"],"director":"Christopher Nolan"}'
-```
-
 ## What the module sends to GraphQL
 
 - A `movies` query to fetch the full list
 - An `addmovie` mutation that is populated from request variables at runtime
-
-## Run locally
-
-Start `graphql-service` first, then run:
-
-```bash
-cd graphql-client
-./mvnw spring-boot:run
-```
 
 ## Notes
 

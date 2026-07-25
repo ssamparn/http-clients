@@ -7,6 +7,7 @@ A multi-module Maven workspace showing several ways to call HTTP APIs with moder
 | Module | Port | What it does |
 | --- | --- | --- |
 | `rest-service` | `8080` | Employee REST API backed by Spring MVC, JPA, cache abstraction, and H2 |
+| `soap-service` | `7070` | Minimal Spring-WS SOAP service with employee operations: GetEmployeeById, CreateEmployee, and GetAllEmployees |
 | `rest-client` | `8081` | Synchronous Spring `RestClient` façade plus a small Spring Cloud Config refresh demo |
 | `web-client` | `8082` | Reactive `WebClient` client with SSL settings and Resilience4j circuit breaker + retry |
 | `graphql-service` | `9090` | GraphQL server exposing movie and actor queries plus an add-movie mutation |
@@ -24,11 +25,12 @@ A multi-module Maven workspace showing several ways to call HTTP APIs with moder
 
 ```text
 http-clients/
-├── rest-service/
-├── rest-client/
-├── web-client/
+├── graphql-client/
 ├── graphql-service/
-└── graphql-client/
+├── rest-client/
+├── rest-service/
+├── soap-service/
+└── web-client/
 ```
 
 ## Build everything
@@ -61,46 +63,6 @@ cd graphql-service && ./mvnw spring-boot:run
 cd rest-client && ./mvnw spring-boot:run
 cd web-client && ./mvnw spring-boot:run
 cd graphql-client && ./mvnw spring-boot:run
-```
-
-## Quick smoke tests
-
-### REST service
-
-```bash
-curl http://localhost:8080/rest/employees/all
-curl http://localhost:8080/rest/employees/1
-```
-
-### WebClient façade
-
-```bash
-curl http://localhost:8082/webclient/get-all-employee
-curl http://localhost:8082/webclient/get-employee/1
-```
-
-### RestClient façade
-
-```bash
-curl http://localhost:8081/client/employees
-curl http://localhost:8081/client/employees/1
-```
-
-### GraphQL service
-
-```bash
-curl http://localhost:9090/graphql \
-  -H 'Content-Type: application/json' \
-  -d '{"query":"{ movies { id title year director } }"}'
-```
-
-### GraphQL client façade
-
-```bash
-curl http://localhost:9091/get-all-movies
-curl -X POST http://localhost:9091/add-movie \
-  -H 'Content-Type: application/json' \
-  -d '{"id":6,"title":"Dark Knight","year":2010,"genres":["Action","SciFi"],"director":"Christopher Nolan"}'
 ```
 
 ## Where to look next

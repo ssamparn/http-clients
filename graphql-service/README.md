@@ -20,14 +20,6 @@ It is intentionally simple and uses in-memory repositories so the GraphQL pieces
 - GraphQL mutation to add a movie
 - GraphiQL enabled for easy local exploration
 
-## Important files
-
-- `src/main/resources/graphql/schema.graphqls`
-- `src/main/java/com/configure/graphqlservice/controller/MovieController.java`
-- `src/main/java/com/configure/graphqlservice/controller/ActorController.java`
-- `src/main/java/com/configure/graphqlservice/service/MovieRepository.java`
-- `src/main/java/com/configure/graphqlservice/service/ActorRepository.java`
-
 ## Main GraphQL operations
 
 ### Query all movies
@@ -78,13 +70,6 @@ mutation {
 
 - GraphQL endpoint: `http://localhost:9090/graphql`
 - GraphiQL UI: `http://localhost:9090/graphiql`
-
-## Run locally
-
-```bash
-cd graphql-service
-./mvnw spring-boot:run
-```
 
 ## Notes
 

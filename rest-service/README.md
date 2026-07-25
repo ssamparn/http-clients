@@ -24,13 +24,6 @@ It demonstrates:
 - Show cache names for demo purposes
 - Bootstrap a simple local persistence setup with H2
 
-## Important classes
-
-- `src/main/java/com/configure/restservice/web/controller/EmployeeRestController.java`
-- `src/main/java/com/configure/restservice/service/EmployeeService.java`
-- `src/main/java/com/configure/restservice/repository/EmployeeRepository.java`
-- `src/main/resources/application.yml`
-
 ## Endpoints
 
 Base path: `/rest/employees`
@@ -44,26 +37,12 @@ Base path: `/rest/employees`
 | `DELETE` | `/{employeeId}` | Delete an employee |
 | `GET` | `/getCacheNames` | List currently configured cache names |
 
-## Sample request
-
-```bash
-curl -X POST http://localhost:8080/rest/employees/create \
-  -H 'Content-Type: application/json' \
-  -d '{"firstName":"Ada","lastName":"Lovelace","yearlyIncome":120000}'
-```
 
 ## Local data/config
 - H2 Driver Class Name: `org.h2.Driver`
 - H2 JDBC URL: `jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE`
 - H2 console: `http://localhost:8080/h2-console/`
 - Cache type: `simple`
-
-## Run locally
-
-```bash
-cd rest-service
-./mvnw spring-boot:run
-```
 
 ## Notes
 

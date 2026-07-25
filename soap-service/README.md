@@ -1,4 +1,4 @@
-# SOAP Service Sample (Spring Boot 4.1.0, Java 25)
+# SOAP Service Module
 
 This module is a minimal SOAP service reference you can use to learn Spring-WS with Spring Boot.
 
@@ -27,12 +27,14 @@ The in-memory repository starts with three employees:
 
 Use the following headers for manual requests:
 
-- `Content-Type: text/xml;charset=UTF-8`
-- `SOAPAction: ""`
+- Method: `POST`
+- URL: `http://localhost:7070/ws`
+- Headers: `Content-Type: text/xml; charset=utf-8`
+- Body -> `raw` -> paste the SOAP envelope below.
 
 ### 1) Create Employee
 
-Request:
+#### Request:
 
 ```xml
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
@@ -51,7 +53,7 @@ Request:
 </soapenv:Envelope>
 ```
 
-Success response:
+#### Success response:
 
 ```xml
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
@@ -70,7 +72,7 @@ Success response:
 </SOAP-ENV:Envelope>
 ```
 
-Validation-style response when employee payload is missing:
+#### Validation-style response when employee payload is missing:
 
 ```xml
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
@@ -84,7 +86,7 @@ Validation-style response when employee payload is missing:
 
 ### 2) Get Employee By Id
 
-Request:
+#### Request:
 
 ```xml
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
@@ -98,7 +100,7 @@ Request:
 </soapenv:Envelope>
 ```
 
-Success response:
+#### Success response:
 
 ```xml
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
@@ -117,7 +119,7 @@ Success response:
 </SOAP-ENV:Envelope>
 ```
 
-Not-found response:
+#### Not-found response:
 
 ```xml
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
@@ -131,7 +133,7 @@ Not-found response:
 
 ### 3) Get All Employees
 
-Request:
+#### Request:
 
 ```xml
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
@@ -143,7 +145,7 @@ Request:
 </soapenv:Envelope>
 ```
 
-Response:
+#### Response:
 
 ```xml
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">

@@ -25,14 +25,6 @@ It also includes:
 - Expose a thin façade over the employee REST service for manual testing
 - Expose a small config endpoint for refresh/config demos
 
-## Important classes
-
-- `src/main/java/com/configure/restclient/config/RestClientConfig.java`
-- `src/main/java/com/configure/restclient/client/gateway/EmployeeApiClient.java`
-- `src/main/java/com/configure/restclient/controller/EmployeeClientController.java`
-- `src/main/java/com/configure/restclient/controller/ConfigController.java`
-- `src/main/resources/application.yml`
-
 ## External dependency
 
 This module is meant to call the `rest-service` module at:
@@ -59,20 +51,6 @@ This module is meant to call the `rest-service` module at:
 - trust store / key store values
 - actuator refresh exposure
 - `spring.cloud.config.enabled: false` for local runs
-
-## Run locally
-
-```bash
-cd rest-client
-./mvnw spring-boot:run
-```
-
-## Quick check
-
-```bash
-curl http://localhost:8081/getUrlFromConfigServer
-curl http://localhost:8081/client/employees
-```
 
 ## Notes
 

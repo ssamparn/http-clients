@@ -23,14 +23,6 @@ This module calls the employee REST service at:
 
 - `http://localhost:8080/rest/employees`
 
-## Important classes
-
-- `src/main/java/com/configure/webclient/config/WebClientConfig.java`
-- `src/main/java/com/configure/webclient/config/Resillience4jConfig.java`
-- `src/main/java/com/configure/webclient/client/GetEmployeeWebClient.java`
-- `src/main/java/com/configure/webclient/client/PostEmployeeWebClient.java`
-- `src/main/java/com/configure/webclient/controller/WebClientTestController.java`
-
 ## Exposed endpoints
 
 Base path: `/webclient`
@@ -41,16 +33,6 @@ Base path: `/webclient`
 | `GET` | `/get-all-employee` | Fetch all employees reactively |
 | `POST` | `/create-employee` | Create an employee reactively |
 
-## Sample requests
-
-```bash
-curl http://localhost:8082/webclient/get-employee/1
-curl http://localhost:8082/webclient/get-all-employee
-curl -X POST http://localhost:8082/webclient/create-employee \
-  -H 'Content-Type: application/json' \
-  -d '{"firstName":"Grace","lastName":"Hopper","yearlyIncome":150000}'
-```
-
 ## Configuration highlights
 
 `application.yml` includes:
@@ -59,19 +41,6 @@ curl -X POST http://localhost:8082/webclient/create-employee \
 - client SSL settings
 - Resilience4j circuit breaker configuration
 - Resilience4j retry configuration
-
-## Test support
-
-This module includes WireMock-based integration test scaffolding under:
-
-- `src/test/java/com/configure/webclient/integration`
-
-## Run locally
-
-```bash
-cd web-client
-./mvnw spring-boot:run
-```
 
 ## Notes
 
