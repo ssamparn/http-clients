@@ -9,7 +9,7 @@ spring:
     url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
     username: user
-    password: user
+    password: password
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
